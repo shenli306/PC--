@@ -1,0 +1,792 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/hardware.css' %}">
+{% endblock %}
+
+{% block content %}
+<style>
+    /* 主圆形容器 */
+    .main-circle {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, rgba(255, 137, 235, 0.15), rgba(167, 233, 255, 0.15));
+        border-radius: 50%;
+        position: relative;  /* 改为相对定位 */
+        margin: 2rem auto;   /* 上下间距2rem，左右居中 */
+        z-index: 100;
+        box-shadow: 0 0 30px rgba(255, 137, 235, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        animation: floatAnimation 3s ease-in-out infinite;
+    }
+
+    /* 导航列表样式 */
+    .circle-nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .circle-nav li {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        left: 50%;
+        top: 50%;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* CPU放在中心 */
+    .circle-nav li:nth-child(1) { /* CPU */
+        transform: translate(-50%, -50%);
+    }
+
+    /* 其他5个硬件按72度角均匀分布（360/5=72） */
+    .circle-nav li:nth-child(2) { /* 显卡 */
+        transform: translate(-50%, -50%) rotate(0deg) translateY(-100px);
+    }
+
+    .circle-nav li:nth-child(3) { /* 主板 */
+        transform: translate(-50%, -50%) rotate(72deg) translateY(-100px);
+    }
+
+    .circle-nav li:nth-child(4) { /* 内存 */
+        transform: translate(-50%, -50%) rotate(144deg) translateY(-100px);
+    }
+
+    .circle-nav li:nth-child(5) { /* 硬盘 */
+        transform: translate(-50%, -50%) rotate(216deg) translateY(-100px);
+    }
+
+    .circle-nav li:nth-child(6) { /* 电源 */
+        transform: translate(-50%, -50%) rotate(288deg) translateY(-100px);
+    }
+
+    /* 导航按钮样式 */
+    .circle-nav a {
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 15px rgba(255, 137, 235, 0.2);
+        backdrop-filter: blur(5px);
+    }
+
+    /* 修改中心CPU的样式，使其更突出 */
+    .circle-nav li:nth-child(1) a {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 0 20px rgba(255, 137, 235, 0.3);
+    }
+
+    .circle-nav i {
+        font-size: 1.6em;
+        margin-bottom: 5px;
+        transition: all 0.3s;
+        color: rgba(255, 137, 235, 0.9);
+    }
+
+    .circle-nav span {
+        font-size: 0.9em;
+        font-weight: 500;
+        transition: all 0.3s;
+        text-shadow: 0 0 10px rgba(167, 233, 255, 0.5);
+    }
+
+    /* 修改hover效果 */
+    .circle-nav a:hover,
+    .circle-nav a.active {
+        background: rgba(255, 255, 255, 0.25);
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(255, 137, 235, 0.3);
+    }
+
+    /* 为中心CPU添加特殊的hover效果 */
+    .circle-nav li:nth-child(1) a:hover,
+    .circle-nav li:nth-child(1) a.active {
+        transform: scale(1.15);
+        box-shadow: 0 0 30px rgba(255, 137, 235, 0.4);
+    }
+
+    /* 主内容区域样式 */
+    .main-content {
+        margin: 0 auto;  /* 居中显示 */
+        padding: 2rem;
+        width: 100%;
+        max-width: 1200px;  /* 限制最大宽度 */
+    }
+
+    /* 硬件表格容器 */
+    .hardware-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        margin-bottom: 40px;  /* 添加底部间距 */
+    }
+
+    .hardware-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .update-button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+
+    .category-title {
+        color: #34495e;
+        margin: 20px 0;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .hardware-table {
+        width: 100%;
+        font-size: 0.85em;
+    }
+
+    .hardware-table th,
+    .hardware-table td {
+        padding: 6px;
+        text-align: left;
+    }
+
+    .hardware-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .hardware-table tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .price-cell {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    .score-cell {
+        color: #2ecc71;
+        font-weight: bold;
+    }
+
+    .comments-cell {
+        color: #3498db;
+    }
+
+    /* 加载动画 */
+    .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 1000;
+    }
+
+    .loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1200px) {
+        .main-circle {
+            width: 250px;
+            height: 250px;
+            left: 30px;
+        }
+
+        .main-content {
+            margin-left: 320px;
+            width: calc(100% - 320px);
+        }
+    }
+
+    @media (max-width: 992px) {
+        .main-circle {
+            width: 200px;
+            height: 200px;
+            left: 20px;
+        }
+
+        .circle-nav li {
+            width: 50px;
+            height: 50px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .main-circle {
+            width: 250px;
+            height: 250px;
+            margin: 1rem auto;
+        }
+
+        .circle-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .circle-nav li {
+            position: static;
+            transform: none;
+        }
+
+        .main-content {
+            padding: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-circle {
+            width: 200px;
+            height: 200px;
+        }
+    }
+
+    /* 动画效果 */
+    @keyframes floatAnimation {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulseAnimation {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    /* 移除旧的圆形导航相关样式，改用横向导航 */
+    .hardware-nav {
+        width: 100%;
+        max-width: 1000px;
+        margin: 1rem auto;
+        padding: 0.7rem;
+        background: linear-gradient(135deg, rgba(255, 137, 235, 0.15), rgba(167, 233, 255, 0.15));
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 30px rgba(255, 137, 235, 0.2);
+    }
+
+    .nav-list {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 0.5rem;
+    }
+
+    .nav-item {
+        flex: 0 1 auto;
+        text-align: center;
+        position: relative;
+        min-width: 80px;
+    }
+
+    .nav-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link i {
+        font-size: 1.5em;
+        margin-bottom: 0.3rem;
+        color: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-link span {
+        font-size: 0.9em;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    /* 悬浮和激活效果 */
+    .nav-link:hover,
+    .nav-link.active {
+        transform: translateY(-3px);
+    }
+
+    .nav-link:hover i,
+    .nav-link.active i {
+        color: rgba(255, 255, 255, 1);
+        transform: scale(1.1);
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-link:hover span,
+    .nav-link.active span {
+        color: rgba(255, 255, 255, 1);
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    /* 当前页面的下标指示器 */
+    .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 3px;
+        background: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) scaleX(0);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(-50%) scaleX(1);
+        }
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .hardware-nav {
+            margin: 0.5rem;
+            padding: 0.5rem;
+        }
+
+        .nav-link {
+            padding: 0.5rem;
+        }
+
+        .nav-link i {
+            font-size: 1.3em;
+        }
+
+        .nav-link span {
+            font-size: 0.8em;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .nav-list {
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            flex: 0 0 33.333%;
+            margin: 0.5rem 0;
+        }
+    }
+
+    /* 修改主内容区域的响应式布局 */
+    .hardware-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    /* 表格响应式处理 */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+
+    .hardware-table {
+        min-width: 800px; /* 确保表格内容在小屏幕上可以滚动 */
+    }
+
+    /* 响应式布局断点 */
+    @media (max-width: 1200px) {
+        .hardware-container {
+            padding: 0.8rem;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .nav-list {
+            gap: 0.3rem;
+        }
+        
+        .nav-item {
+            min-width: 70px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hardware-nav {
+            margin: 0.5rem;
+        }
+
+        .nav-list {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-item {
+            flex: 0 0 auto;
+            margin: 0.2rem;
+        }
+
+        .hardware-container {
+            padding: 0.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .nav-item {
+            min-width: 60px;
+        }
+
+        .nav-link i {
+            font-size: 1.2em;
+        }
+
+        .nav-link span {
+            font-size: 0.75em;
+        }
+    }
+
+    /* 硬件页面通用样式 */
+    .hardware-page {
+        animation: fadeIn 0.5s ease-in-out;
+        width: 100%;
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* 头部区域 */
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+    }
+
+    /* 标题样式 */
+    .hardware-title {
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        color: #fff;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* 更新按钮 */
+    .update-button {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    /* 表格容器 */
+    .table-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 表格样式 */
+    .hardware-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: clamp(0.75rem, 1.3vw, 0.9rem);
+    }
+
+    .hardware-table th {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        font-weight: 600;
+        color: #333;
+        text-align: left;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* 响应式布局 */
+    @media (max-width: 1200px) {
+        .hardware-page {
+            padding: 0 15px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .table-container {
+            padding: 0.8rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hardware-page {
+            padding: 0 10px;
+        }
+
+        .header-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .update-button {
+            width: 100%;
+        }
+
+        .table-container {
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hardware-title {
+            font-size: 1.1rem;
+        }
+
+        .hardware-table th,
+        .hardware-table td {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* 添加搜索和排序功能的样式 */
+    .filter-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+    }
+
+    .search-wrapper, .sort-wrapper {
+        position: relative;
+        flex: 1;
+    }
+
+    .search-input, .sort-select {
+        width: 100%;
+        padding: 0.7rem 1rem 0.7rem 2.5rem;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    .search-icon, .sort-icon {
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+    /* 表格样式优化 */
+    .hardware-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+    }
+
+    .hardware-table th {
+        background: linear-gradient(135deg, rgba(255, 137, 235, 0.1), rgba(167, 233, 255, 0.1));
+        padding: 1rem;
+        font-weight: 600;
+        color: #333;
+        text-align: left;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .hardware-table td {
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .hardware-table tr:hover {
+        background: rgba(255, 137, 235, 0.05);
+    }
+
+    /* 单元格样式 */
+    .price-cell {
+        color: #e74c3c;
+        font-weight: 600;
+    }
+
+    .score-cell {
+        color: #2ecc71;
+        font-weight: 600;
+    }
+
+    .comments-cell {
+        color: #3498db;
+    }
+
+    /* 动画效果 */
+    .hardware-table tbody tr {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    .hardware-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+    .hardware-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+    .hardware-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+    .hardware-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+    .hardware-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .filter-section {
+            flex-direction: column;
+        }
+
+        .search-wrapper, .sort-wrapper {
+            width: 100%;
+        }
+
+        .hardware-table th,
+        .hardware-table td {
+            padding: 0.6rem;
+        }
+    }
+</style>
+
+<!-- 横向导航栏 -->
+<nav class="hardware-nav">
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a href="{% url 'cpu' %}" class="nav-link {% if request.path == '/CPU/' %}active{% endif %}">
+                <i class="fas fa-microchip"></i>
+                <span>CPU</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'xianka' %}" class="nav-link {% if request.path == '/xianka/' %}active{% endif %}">
+                <i class="fas fa-tv"></i>
+                <span>显卡</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'zhuban' %}" class="nav-link {% if request.path == '/zhuban/' %}active{% endif %}">
+                <i class="fas fa-server"></i>
+                <span>主板</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'neicun' %}" class="nav-link {% if request.path == '/neicun/' %}active{% endif %}">
+                <i class="fas fa-memory"></i>
+                <span>内存</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'yingpan' %}" class="nav-link {% if request.path == '/yingpan/' %}active{% endif %}">
+                <i class="fas fa-hdd"></i>
+                <span>硬盘</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'dianyuan' %}" class="nav-link {% if request.path == '/dianyuan/' %}active{% endif %}">
+                <i class="fas fa-plug"></i>
+                <span>电源</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- 主内容区域 -->
+<div class="hardware-page">
+    {% block hardware_content %}{% endblock %}
+</div>
+
+<!-- 加载动画 -->
+<div class="loading-overlay">
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+        <h3>正在更新数据...</h3>
+        <p>请稍候，这可能需要几分钟时间</p>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{% static 'js/hardware.js' %}"></script>
+{% endblock %}
+{% endblock %} 

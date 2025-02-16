@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <title>登录界面</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box login-box">
+            <div class="left image-side"></div>
+            <div class="right form-side">
+                <h4>登 录</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if error %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endif %}
+                    <input class="acc" name="username" placeholder="用户名">
+                    <input class="acc" name="password" type="password" placeholder="密码">
+                    <input class="submit" type="submit" value="登录">
+                </form>
+                <div class="fn">
+                    <a href="/register/">注册账号</a>
+                    <a href="#">找回密码</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 展开动画
+            const box = document.querySelector('.box');
+            setTimeout(() => {
+                box.classList.add('box-expand');
+            }, 100);
+
+            // 表单验证
+            const form = document.querySelector('form');
+            const username = form.querySelector('input[name="username"]');
+            const password = form.querySelector('input[name="password"]');
+
+            // 表单提交验证
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 检查用户名是否为空
+                if (!username.value.trim()) {
+                    alert('用户名不能为空！');
+                    username.focus();
+                    return;
+                }
+
+                // 检查密码是否为空
+                if (!password.value) {
+                    alert('密码不能为空！');
+                    password.focus();
+                    return;
+                }
+
+                // 验证通过，提交表单
+                this.submit();
+            });
+
+            // 移除密码实时验证
+            password.removeEventListener('input', function() {});
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,316 @@
+{% extends 'hardware_base.html' %}
+
+{% block hardware_content %}
+<div class="cpu-container">
+    <div class="header-section">
+        <h1 class="hardware-title">
+            <i class="fas fa-microchip"></i>
+            CPU 信息
+        </h1>
+        <form method="POST" class="update-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="crawl">
+            <button type="submit" class="update-button">
+                <i class="fas fa-sync-alt"></i>
+                更新数据
+            </button>
+        </form>
+    </div>
+
+    <div class="brands-container">
+        <div class="brands-grid">
+            {% for brand, cpus in brands.items %}
+            <div class="brand-section {% if brand == 'Intel' %}intel-section{% else %}amd-section{% endif %}">
+                <div class="brand-header">
+                    <i class="fab fa-{% if brand == 'Intel' %}intel{% else %}amd{% endif %}"></i>
+                    <h2>{{ brand }} CPU</h2>
+                </div>
+                {% if cpus %}
+                <div class="filter-section">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="搜索{{ brand }} CPU...">
+                    </div>
+                    <div class="sort-wrapper">
+                        <i class="fas fa-sort-amount-down sort-icon"></i>
+                        <select class="sort-select">
+                            <option value="default">默认排序</option>
+                            <option value="price-asc">价格从低到高</option>
+                            <option value="price-desc">价格从高到低</option>
+                            <option value="score-desc">评分从高到低</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="hardware-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-microchip"></i> 型号</th>
+                                <th><i class="fas fa-yen-sign"></i> 价格</th>
+                                <th><i class="fas fa-star"></i> 评分</th>
+                                <th><i class="fas fa-comments"></i> 评论数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cpu in cpus %}
+                            <tr class="cpu-row">
+                                <td class="model-cell">{{ cpu.name }}</td>
+                                <td class="price-cell">{{ cpu.price }}</td>
+                                <td class="score-cell">{{ cpu.score }}</td>
+                                <td class="comments-cell">{{ cpu.comments }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="no-data">暂无 {{ brand }} CPU 数据</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .cpu-container {
+        animation: fadeIn 0.5s ease-in-out;
+        width: 100%;
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .brands-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        width: 100%;
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hardware-title {
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        color: #2c3e50;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .hardware-title i {
+        color: #3498db;
+    }
+
+    .update-button {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        font-size: clamp(0.8rem, 1.5vw, 1rem);
+    }
+
+    .update-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+    }
+
+    .brand-section {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .brand-section:hover {
+        transform: translateY(-5px);
+    }
+
+    .brand-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .brand-header i {
+        font-size: 2rem;
+    }
+
+    .brand-header h2 {
+        margin: 0;
+        font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+        color: #2c3e50;
+    }
+
+    .intel-section .brand-header i {
+        color: #0071C5;
+    }
+
+    .intel-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #0071C5, #00A4E4);
+    }
+
+    .amd-section .brand-header i {
+        color: #ED1C24;
+    }
+
+    .amd-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #ED1C24, #FF5733);
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        color: #666;
+        font-style: italic;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .hardware-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        font-size: clamp(0.75rem, 1.3vw, 0.9rem);
+    }
+
+    .hardware-table th {
+        background: #f8f9fa;
+        padding: clamp(0.5rem, 1vw, 1rem);
+        font-weight: 600;
+        color: #2c3e50;
+        text-align: left;
+        border-bottom: 2px solid #eee;
+        white-space: nowrap;
+    }
+
+    .hardware-table th i {
+        margin-right: 0.5rem;
+        color: #3498db;
+    }
+
+    .cpu-row {
+        transition: background-color 0.3s ease;
+    }
+
+    .cpu-row:hover {
+        background-color: #f8f9fa;
+    }
+
+    .hardware-table td {
+        padding: clamp(0.5rem, 1vw, 1rem);
+        border-bottom: 1px solid #eee;
+    }
+
+    .model-cell {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .price-cell {
+        color: #e74c3c;
+        font-weight: 600;
+    }
+
+    .score-cell {
+        color: #27ae60;
+        font-weight: 600;
+    }
+
+    .comments-cell {
+        color: #3498db;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .brands-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .cpu-container {
+            padding: 0 10px;
+        }
+
+        .brand-section {
+            padding: 1rem;
+        }
+
+        .brand-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .update-button {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hardware-title {
+            font-size: 1.2em;
+        }
+
+        .table-responsive {
+            margin: 0 -1rem;
+        }
+
+        .hardware-table th,
+        .hardware-table td {
+            padding: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}

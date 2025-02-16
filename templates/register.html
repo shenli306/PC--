@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/register.css">
+    <title>注册界面</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="left">
+                <h4>注 册</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if error %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endif %}
+                    <input class="acc" name="username" placeholder="用户名">
+                    <input class="acc" name="password" type="password" placeholder="密码">
+                    <input class="acc" name="confirm_password" type="password" placeholder="确认密码">
+                    <input class="submit" type="submit" value="注册">
+                </form>
+                <div class="fn">
+                    <a href="/login/">登录账号</a>
+                    <a href="#">找回密码</a>
+                </div>
+            </div>
+            <div class="right"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 展开动画
+            const box = document.querySelector('.box');
+            setTimeout(() => {
+                box.classList.add('box-expand');
+            }, 100);
+
+            // 表单验证
+            const form = document.querySelector('form');
+            const username = form.querySelector('input[name="username"]');
+            const password = form.querySelector('input[name="password"]');
+            const confirmPassword = form.querySelector('input[name="confirm_password"]');
+
+            // 密码验证函数
+            function validatePassword(pwd) {
+                // 检查长度是否大于6位
+                if (pwd.length < 6) return '密码长度必须大于6位';
+                
+                // 检查是否包含数字和字母
+                if (!/[0-9]/.test(pwd) || !/[a-zA-Z]/.test(pwd)) {
+                    return '密码必须包含数字和字母';
+                }
+                
+                // 检查是否有重复字符
+                for (let i = 0; i < pwd.length - 1; i++) {
+                    if (pwd[i] === pwd[i + 1]) {
+                        return '密码不能包含连续重复的字符';
+                    }
+                }
+                
+                return '';
+            }
+
+            // 表单提交验证
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 检查用户名是否为空
+                if (!username.value.trim()) {
+                    alert('用户名不能为空！');
+                    username.focus();
+                    return;
+                }
+
+                // 验证密码
+                const passwordError = validatePassword(password.value);
+                if (passwordError) {
+                    alert(passwordError);
+                    password.focus();
+                    return;
+                }
+
+                // 检查密码确认
+                if (password.value !== confirmPassword.value) {
+                    alert('两次输入的密码不一致！');
+                    confirmPassword.focus();
+                    return;
+                }
+
+                // 验证通过，提交表单
+                this.submit();
+            });
+
+            // 实时密码验证
+            password.addEventListener('input', function() {
+                const error = validatePassword(this.value);
+                if (error) {
+                    this.style.borderColor = '#ff4d4d';
+                    this.title = error;  // 鼠标悬停时显示错误信息
+                } else {
+                    this.style.borderColor = '#4CAF50';
+                    this.title = '密码格式正确';
+                }
+            });
+
+            // 实时确认密码验证
+            confirmPassword.addEventListener('input', function() {
+                if (password.value && this.value) {
+                    if (password.value !== this.value) {
+                        this.style.borderColor = '#ff4d4d';
+                        this.title = '两次输入的密码不一致';
+                    } else {
+                        this.style.borderColor = '#4CAF50';
+                        this.title = '密码匹配';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
+

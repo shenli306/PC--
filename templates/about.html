@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/about.css">
+<div class="about-container">
+    <div class="about-header">
+        <h1>关于我们</h1>
+        <div class="header-underline"></div>
+    </div>
+
+    <div class="about-content">
+        <div class="about-section">
+            <h2>网站简介</h2>
+            <p>本网站是一个专注于电脑硬件价格监控的平台，旨在为用户提供最新、最准确的硬件价格信息。我们通过爬取中关村在线平台的最新数据，为用户提供全面的硬件价格参考。</p>
+        </div>
+
+        <div class="about-section">
+            <h2>功能特点</h2>
+            <div class="features">
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>实时价格</h3>
+                    <p>定期更新各类硬件的最新价格信息</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-database"></i>
+                    <h3>数据分析</h3>
+                    <p>提供价格趋势分析和对比功能</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-sync"></i>
+                    <h3>及时更新</h3>
+                    <p>保持数据的实时性和准确性</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2>支持硬件</h2>
+            <div class="hardware-list">
+                <span class="hardware-item">CPU</span>
+                <span class="hardware-item">显卡</span>
+                <span class="hardware-item">主板</span>
+                <span class="hardware-item">内存</span>
+                <span class="hardware-item">硬盘</span>
+                <span class="hardware-item">电源</span>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2>联系我们</h2>
+            <p>如果您有任何问题或建议，欢迎通过以下方式联系我们：</p>
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> 邮箱：xiyue306825@gmail.com</p>
+                <p><i class="fas fa-comment"></i> QQ：3068254068</p>
+                <p><i class="fab fa-weixin"></i> 微信：elysia3306</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

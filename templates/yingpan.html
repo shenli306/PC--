@@ -1,0 +1,390 @@
+{% extends 'hardware_template.html' %}
+
+{% block hardware_content %}
+{{ block.super }}
+<div class="header-section">
+    <div class="title-wrapper">
+        <h1 class="hardware-title">
+            <i class="fas fa-hdd title-icon"></i>
+            硬盘信息
+        </h1>
+        <p class="subtitle">为您的电脑选择合适的硬盘</p>
+    </div>
+    <div class="controls">
+        <form method="POST" class="update-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="crawl">
+            <button type="submit" class="update-button">
+                <i class="fas fa-sync-alt"></i> 更新数据
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="filter-section">
+    <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="搜索硬盘型号...">
+    </div>
+    <div class="sort-wrapper">
+        <i class="fas fa-sort-amount-down sort-icon"></i>
+        <select id="sortSelect" class="sort-select">
+            <option value="default">默认排序</option>
+            <option value="price-asc">价格从低到高</option>
+            <option value="price-desc">价格从高到低</option>
+            <option value="score-desc">评分从高到低</option>
+            <option value="comments-desc">评论数从多到少</option>
+        </select>
+    </div>
+</div>
+
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="hardware-table" id="hardwareTable">
+            <thead>
+                <tr>
+                    <th>型号</th>
+                    <th>价格</th>
+                    <th>评分</th>
+                    <th>评论数</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in hard_disks %}
+                <tr>
+                    <td class="model-cell">
+                        <div class="model-info">
+                            <span class="model-name">{{ item.name }}</span>
+                        </div>
+                    </td>
+                    <td class="price-cell">
+                        <div class="price-tag">
+                            {{ item.price }} ¥
+                        </div>
+                    </td>
+                    <td class="score-cell">
+                        <div class="score-value">{{ item.score }}</div>
+                    </td>
+                    <td class="comments-cell">
+                        <div class="comments-badge">
+                            <i class="far fa-comment"></i>
+                            <span>{{ item.comments }}</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* 添加淡入动画关键帧 */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* 为主要内容区域添加动画 */
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.2) 100%);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .title-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hardware-title {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin: 0;
+    }
+
+    .title-icon {
+        color: #3498db;
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .filter-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        animation: fadeIn 0.6s ease-out 0.2s;
+        animation-fill-mode: both;
+    }
+
+    .search-wrapper, .sort-wrapper {
+        position: relative;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .search-icon, .sort-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #95a5a6;
+    }
+
+    .search-input, .sort-select {
+        width: 100%;
+        padding: 10px 12px 10px 35px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        background-color: white;
+    }
+
+    .search-input:focus, .sort-select:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        outline: none;
+        transform: translateY(-1px);
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        animation: fadeIn 0.6s ease-out 0.4s;
+        animation-fill-mode: both;
+    }
+
+    .hardware-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .hardware-table th {
+        background: #f8f9fa;
+        padding: 1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        text-align: left;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .hardware-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .hardware-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* 为表格行添加渐进式动画 */
+    .hardware-table tbody tr {
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards;
+        transition: all 0.3s ease;
+    }
+
+    /* 使用CSS选择器为每一行添加递增的延迟 */
+    {% for i in "12345" %}
+        .hardware-table tbody tr:nth-child({{ forloop.counter }}) {
+            animation-delay: 0.{{ forloop.counter }}s;
+        }
+    {% endfor %}
+
+    .hardware-table tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+        transform: translateX(5px);
+    }
+
+    .model-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .model-name {
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .price-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        color: #e74c3c;
+        font-weight: 600;
+    }
+
+    .score-value {
+        color: #2ecc71;
+        font-weight: bold;
+    }
+
+    .comments-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0.8rem;
+        background: rgba(52, 152, 219, 0.1);
+        border-radius: 20px;
+        color: #3498db;
+    }
+
+    .update-button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 500;
+    }
+
+    .update-button:hover {
+        background: #2980b9;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .header-section {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+            text-align: center;
+        }
+
+        .title-wrapper {
+            align-items: center;
+        }
+
+        .filter-section {
+            flex-direction: column;
+        }
+
+        .search-wrapper, .sort-wrapper {
+            width: 100%;
+        }
+
+        .hardware-table {
+            font-size: 0.9rem;
+        }
+
+        .hardware-table th,
+        .hardware-table td {
+            padding: 0.8rem;
+        }
+
+        .comments-badge {
+            padding: 0.2rem 0.5rem;
+        }
+    }
+
+    /* 增加选择器优先级 */
+    .hardware-title .fas.fa-hdd.title-icon,
+    .hardware-title i.title-icon {
+        color: #3498db !important;
+        font-size: 1.5rem;
+    }
+
+    .hardware-title i.fas.fa-hdd {
+        color: #3498db !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const table = document.getElementById('hardwareTable');
+
+    function filterAndSortTable() {
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const searchTerm = searchInput.value.toLowerCase();
+        const sortValue = sortSelect.value;
+
+        rows.forEach(row => {
+            const text = row.querySelector('.model-cell').textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+
+        if (sortValue !== 'default') {
+            const visibleRows = rows.filter(row => row.style.display !== 'none');
+            visibleRows.sort((a, b) => {
+                let aValue, bValue;
+                
+                switch(sortValue) {
+                    case 'price-asc':
+                    case 'price-desc':
+                        aValue = parseFloat(a.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
+                        bValue = parseFloat(b.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
+                        break;
+                    case 'score-desc':
+                        aValue = parseFloat(a.querySelector('.score-cell').textContent);
+                        bValue = parseFloat(b.querySelector('.score-cell').textContent);
+                        break;
+                    case 'comments-desc':
+                        aValue = parseInt(a.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
+                        bValue = parseInt(b.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
+                        break;
+                }
+
+                if (sortValue.endsWith('-desc')) {
+                    return bValue - aValue;
+                }
+                return aValue - bValue;
+            });
+
+            const tbody = table.querySelector('tbody');
+            visibleRows.forEach(row => tbody.appendChild(row));
+        }
+    }
+
+    searchInput.addEventListener('input', filterAndSortTable);
+    sortSelect.addEventListener('change', filterAndSortTable);
+});
+
+window.hardwareConfig = {
+    title: '硬盘信息',
+    icon_class: 'fas fa-hdd',
+    item_type: '硬盘',
+    brand_icons: {
+        'Western Digital': 'fas fa-hdd',
+        'Seagate': 'fas fa-hdd',
+        'Samsung': 'fas fa-hdd',
+        'Crucial': 'fas fa-hdd'
+    }
+};
+</script>
+{% endblock %}

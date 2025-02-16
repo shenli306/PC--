@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/index.css">
+    <div class="content-section">
+        <!-- 左侧主要内容区域 -->
+        <div class="main-content">
+            <!-- 最新资讯区域 -->
+            <div class="news-banner">
+                <div class="news-header">
+                    <h2>最新资讯</h2>
+                </div>
+                <div class="news-list">
+                    <a href="#" class="news-item">
+                        <span class="news-date">2025-03-24</span>
+                        <span class="news-title">网站改版更新公告</span>
+                    </a>
+                    {% if latest_gpu %}
+                    <a href="/xianka/" class="news-item">
+                        <span class="news-date">{{ latest_gpu.created_at|date:"Y-m-d" }}</span>
+                        <span class="news-title">最新显卡价格: {{ latest_gpu.name }} - {{ latest_gpu.price }}￥</span>
+                    </a>
+                    {% endif %}
+                    {% if latest_cpu %}
+                    <a href="/CPU/" class="news-item">
+                        <span class="news-date">{{ latest_cpu.created_at|date:"Y-m-d" }}</span>
+                        <span class="news-title">最新CPU价格: {{ latest_cpu.name }} - {{ latest_cpu.price }}￥</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 卡片内容区域 -->
+            <div class="featured-cards">
+                <!-- 第一行卡片 -->
+                <a href="/CPU/" class="card-link">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/AMD-Ryzen-9000X3D-3D-V-Cache-CPUs.jpg" alt="CPU">
+                        </div>
+                        <div class="card-content">
+                            <h3>CPU</h3>
+                            <p>中央处理器</p>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="/xianka/" class="card-link">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/NVIDIA-GeForce-RTX-4090-Founders-Edition-.jpg" alt="显卡">
+                        </div>
+                        <div class="card-content">
+                            <h3>显卡</h3>
+                            <p>图形处理器</p>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="/zhuban/" class="card-link">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/ROG STRIX Z890-A GAMING WIFI S 吹雪.png" alt="主板">
+                        </div>
+                        <div class="card-content">
+                            <h3>主板</h3>
+                            <p>主板芯片组</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/neicun/" class="card-link">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/ROG STRIX Asgardx-吹雪.png" alt="内存">
+                        </div>
+                        <div class="card-content">
+                            <h3>内存</h3>
+                            <p>运行内存</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/yingpan/" class="card-link">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/三星（SAMSUNG）1TB SSD固态硬盘 M.2接口(NVMe协议PCIe4.045.02) 990 EVO Plus.png" alt="硬盘">
+                        </div>
+                        <div class="card-content">
+                            <h3>硬盘</h3>
+                            <p>存储设备</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/dianyuan/" class="card-link">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/爱国者（aigo）额定500W 黑暗骑士650DK 台式机电脑主机电源（主动式PFC宽幅节能温控长线材支持背线）.png" alt="电源">
+                        </div>
+                        <div class="card-content">
+                            <h3>电源</h3>
+                            <p>供电设备</p>
+                        </div>
+                    </div>
+                </a>
+
+               
+            </div>
+        </div>
+
+        <!-- 右侧边栏 -->
+        <div class="sidebar">
+            <div class="profile-card">
+                <div class="profile-icon" onclick="toggleLogout()">
+                    <img src="/static/img/preview.jpg" alt="0.0">
+                    <div class="logout-button" id="logoutBtn">
+                        <a href="{% url 'logout' %}">退出登录</a>
+                    </div>
+                </div>
+                <h2 class="profile-name">[{{ username }}]</h2>
+                <p class="profile-desc">0v0</p>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="number">6</span>
+                        <span class="label">文章</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number">6</span>
+                        <span class="label">分类</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number">1024</span>
+                        <span class="label">访问量</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number">8096天</span>
+                        <span class="label">建站天数</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 标签目录 -->
+            <div class="tag-section">
+                <h3>最新型号</h3>
+                <div class="tags">
+                    <a href="#" class="tag"># CPU</a>
+                    <a href="#" class="tag"># 显卡</a>
+                    <a href="#" class="tag"># 主板</a>
+                    <a href="#" class="tag"># 内存条</a>
+                    <a href="#" class="tag"># 硬盘</a>
+                    <a href="#" class="tag"># 电源</a>
+                    <a href="/autowx/" class="tag">微信自动回复</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/script.js"></script>
+
+    <style>
+    .profile-icon {
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-icon:hover {
+        transform: scale(1.05);
+    }
+
+    .logout-button {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        background: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 1000;
+        margin-top: 10px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .logout-button.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .logout-button::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid white;
+    }
+
+    .logout-button a {
+        color: #ff4d4d;
+        text-decoration: none;
+        font-size: 14px;
+        display: block;
+        transition: all 0.3s ease;
+        padding: 2px 10px;
+        border-radius: 3px;
+    }
+
+    .logout-button:hover {
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .logout-button a:hover {
+        background: #fff5f5;
+        transform: translateY(-1px);
+    }
+    </style>
+
+    <script>
+    function toggleLogout() {
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.classList.toggle('show');
+    }
+
+    // 点击其他地方时隐藏退出按钮
+    document.addEventListener('click', function(event) {
+        const profileIcon = document.querySelector('.profile-icon');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        if (!profileIcon.contains(event.target) && logoutBtn.classList.contains('show')) {
+            logoutBtn.classList.remove('show');
+        }
+    });
+    </script>
+{% endblock %}
+

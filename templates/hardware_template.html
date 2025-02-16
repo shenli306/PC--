@@ -1,0 +1,137 @@
+{% extends 'hardware_base.html' %}
+
+{% block hardware_content %}
+<div class="hardware-page">
+    <!-- 头部区域 -->
+    <div class="header-section">
+        <div class="title-wrapper">
+            <h1 class="hardware-title">
+                <i class="{{ page_config.icon_class }}"></i>
+                {{ page_config.title }}
+            </h1>
+            <p class="subtitle">为您的电脑选择合适的{{ page_config.item_type }}</p>
+        </div>
+        <form method="POST" class="update-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="crawl">
+            <button type="submit" class="update-button">
+                <i class="fas fa-sync-alt"></i>
+                更新数据
+            </button>
+        </form>
+    </div>
+
+    <!-- 过滤区域 -->
+    <div class="filter-section">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="搜索{{ page_config.item_type }}型号...">
+        </div>
+        <div class="sort-wrapper">
+            <i class="fas fa-sort-amount-down sort-icon"></i>
+            <select id="sortSelect" class="sort-select">
+                <option value="default">默认排序</option>
+                <option value="price-asc">价格从低到高</option>
+                <option value="price-desc">价格从高到低</option>
+                <option value="score-desc">评分从高到低</option>
+                <option value="comments-desc">评论数从多到少</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 数据表格 -->
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="hardware-table" id="hardwareTable">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-microchip"></i> 型号</th>
+                        <th><i class="fas fa-yen-sign"></i> 价格</th>
+                        <th><i class="fas fa-star"></i> 评分</th>
+                        <th><i class="fas fa-comments"></i> 评论数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="model-cell">
+                            <div class="model-info">
+                                <span class="model-name">{{ item.name }}</span>
+                            </div>
+                        </td>
+                        <td class="price-cell">
+                            <div class="price-tag">{{ item.price }}</div>
+                        </td>
+                        <td class="score-cell">
+                            <div class="score-value">{{ item.score }}</div>
+                        </td>
+                        <td class="comments-cell">
+                            <div class="comments-badge">
+                                <i class="far fa-comment"></i>
+                                <span>{{ item.comments }}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript保持不变 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const table = document.getElementById('hardwareTable');
+
+    function filterAndSortTable() {
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        const searchTerm = searchInput.value.toLowerCase();
+        const sortValue = sortSelect.value;
+
+        // 过滤
+        rows.forEach(row => {
+            const text = row.querySelector('.model-cell').textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+
+        // 排序
+        if (sortValue !== 'default') {
+            const visibleRows = rows.filter(row => row.style.display !== 'none');
+            visibleRows.sort((a, b) => {
+                let aValue, bValue;
+                
+                switch(sortValue) {
+                    case 'price-asc':
+                    case 'price-desc':
+                        aValue = parseFloat(a.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
+                        bValue = parseFloat(b.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
+                        break;
+                    case 'score-desc':
+                        aValue = parseFloat(a.querySelector('.score-cell').textContent);
+                        bValue = parseFloat(b.querySelector('.score-cell').textContent);
+                        break;
+                    case 'comments-desc':
+                        aValue = parseInt(a.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
+                        bValue = parseInt(b.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
+                        break;
+                }
+
+                if (sortValue.endsWith('-desc')) {
+                    return bValue - aValue;
+                }
+                return aValue - bValue;
+            });
+
+            const tbody = table.querySelector('tbody');
+            visibleRows.forEach(row => tbody.appendChild(row));
+        }
+    }
+
+    searchInput.addEventListener('input', filterAndSortTable);
+    sortSelect.addEventListener('change', filterAndSortTable);
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信自动回复</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #ff89eb, #a7e9ff);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #444;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .step h3 {
+            color: #555;
+            margin-top: 0;
+        }
+
+        .step p {
+            color: #666;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+
+        .note {
+            background: rgba(255, 235, 59, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .note p {
+            margin: 0;
+            color: #795548;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .back-btn-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #2b2b2b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-btn-container">
+        <a href="/index/" class="back-btn">返回首页</a>
+    </div>
+    <div class="container">
+        <h1>微信自动回复设置教程</h1>
+
+        <div class="section">
+            <h2>方法一</h2>
+            
+            <div class="step">
+                <h3>步骤1：下载并安装微信机器人</h3>
+                <p>首先需要下载并安装微信机器人软件。推荐使用以下工具之一：</p>
+                <ul>
+                    <li>WeChat Bot</li>
+                    <li>WeChatEvolution</li>
+                    <li>itchat</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h3>步骤2：配置自动回复规则</h3>
+                <p>在机器人软件中设置关键词和对应的回复内容：</p>
+                <div class="code-block">
+                    示例规则：
+                    关键词：你好
+                    回复：您好！这是自动回复消息。
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>步骤3：启动自动回复</h3>
+                <p>完成配置后，启动自动回复功能：</p>
+                <ol>
+                    <li>打开机器人软件</li>
+                    <li>扫描登录微信</li>
+                    <li>开启自动回复功能</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>高级功能</h2>
+            
+            <div class="step">
+                <h3>定时消息</h3>
+                <p>可以设置在特定时间发送消息：</p>
+                <div class="code-block">
+                    时间：每天 9:00
+                    消息：早上好！今天也要元气满满哦！
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>群消息管理</h3>
+                <p>可以设置群聊的自动回复规则：</p>
+                <ul>
+                    <li>自动欢迎新成员</li>
+                    <li>关键词触发回复</li>
+                    <li>定时群发消息</li>
+                </ul>
+            </div>
+        </div>
+        <div class="section">
+        <h2>方法二</h2>
+        <p>使用Python实现微信自动回复</p>
+        </div>
+        <div class="section">
+            <h2>Python代码示例</h2>
+            
+            <div class="step">
+                <h3>使用Python实现自动回复</h3>
+                <p>以下是一个使用Python实现微信自动回复的基础代码示例：</p>
+                <div class="code-block">
+<pre>
+    from wxauto import WeChat
+    import schedule
+    import time
+    from datetime import datetime
+    import random
+    
+    # 早安问候语列表
+    MORNING_GREETINGS = [
+        "晨光微洒，柳垂翠影，愿你心中也有一缕温暖，迎接这新的一天。早安，愿你如这清晨般清新，灵动。",
+        "天边第一抹阳光如约而至，晨风带来微凉，愿你以最柔软的心情，拥抱这温柔的晨曦。早安！",
+        "清晨的露珠在阳光下闪烁，如你心中的希望，明亮而清晰。愿你今天心如明镜，事事顺意。早安！",
+        "夜的余韵已消散，清晨带着第一缕阳光，微风轻拂你的脸庞，愿你的一天如诗如画，安好如初。早安！",
+        "一缕晨曦透过窗棂，温柔地洒在你的心田，愿你今天的每一步，都走得坚定而温暖。早安，愿你拥有美好的一天。 ☀️"
+        
+    ]
+    
+    # 晚安问候语列表
+    NIGHT_GREETINGS = [
+        "星辰渐亮，月华如水，愿你在这宁静的夜晚，心如止水，梦里繁花似锦。晚安，祝你美梦成真。",
+        "夜色如绸，星光如诗，愿你安然入睡，做个温柔而美丽的梦。晚安，愿你在梦境中与温暖相遇。",
+        "月光轻洒，夜风徐徐，愿你在这片宁静中放下所有疲惫，静静进入梦乡，做一场心灵的旅行。晚安！",
+        "星光闪烁，夜空如墨，愿你轻轻闭上双眼，心中无忧，做一个温暖甜美的梦。晚安，愿明天再相见。",
+        "夜深人静，月光依旧如水，愿你在这片宁静中找到属于自己的平和，安稳入梦。晚安，愿你心中无忧，做个好梦。"
+    ]
+    
+    def send_message_to_friends(message_type="morning"):
+        """发送消息给所有好友"""
+        try:
+            current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            message_text = "早安" if message_type == "morning" else "晚安"
+            print(f"[{current_time}] 准备发送{message_text}消息...")
+            
+            wx = WeChat()
+            # 获取随机问候语
+            message = random.choice(MORNING_GREETINGS if message_type == "morning" else NIGHT_GREETINGS)
+            
+            # 给每个好友发送消息
+            for friend in friend_list:
+                try:
+                    print(f"正在查找好友: {friend}")
+                    wx.ChatWith(friend)
+                    print(f"正在发送消息给 {friend}...")
+                    wx.SendMsg(message)
+                    print(f"[{current_time}] 成功发送{message_text}消息给 {friend}！")
+                except Exception as e:
+                    print(f"发送消息给 {friend} 时出错: {str(e)}")
+                    continue
+                
+            print(f"[{current_time}] 完成所有{message_text}消息发送！")
+        except Exception as e:
+            print(f"发送消息时出错: {str(e)}")
+    
+    def send_morning():
+        """发送早安消息"""
+        send_message_to_friends("morning")
+    
+    def send_night():
+        """发送晚安消息"""
+        send_message_to_friends("night")
+    
+    if __name__ == "__main__":
+        # 设置要发送消息的好友昵称列表
+        friend_list = [
+            "联系人1",
+            "联系人2"
+        ]
+        
+        # 设置定时任务
+        schedule.every().day.at("07:30").do(send_morning)  # 每天早上7:30发送早安
+        schedule.every().day.at("22:30").do(send_night)    # 每天晚上22:30发送晚安
+        
+        print("\n=== 微信自动化消息发送程序已启动 ===")
+        print("目标好友列表:")
+        for friend in friend_list:
+            print(f"- {friend}")
+        print("\n发送时间:")
+        print("- 早安时间: 07:30")
+        print("- 晚安时间: 22:30")
+        print("\n程序正在运行中，请勿关闭窗口...\n")
+        
+        # 运行定时任务
+        last_print_time = datetime.now()
+        
+        while True:
+            try:
+                current_time = datetime.now()
+                
+                # 每30分钟才打印一次状态
+                if (current_time - last_print_time).seconds >= 1800:
+                    # 获取下一次任务的执行时间
+                    next_run = None
+                    for job in schedule.jobs:
+                        next_run_time = job.next_run
+                        if next_run is None or next_run_time < next_run:
+                            next_run = next_run_time
+                    
+                    # 打印下一次任务执行时间
+                    if next_run:
+                        print(f"[{current_time.strftime('%Y-%m-%d %H:%M:%S')}] 下一次任务将在 {next_run.strftime('%Y-%m-%d %H:%M:%S')} 执行")
+                    last_print_time = current_time
+                
+                schedule.run_pending()
+                time.sleep(60)  # 每分钟检查一次
+                
+            except Exception as e:
+                print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 发生错误: {str(e)}")
+                time.sleep(60)
+</pre>
+                </div>
+                <p>将上述代码保存为 .py 文件并运行，即可实现基础的自动回复功能。(注：电脑微信要打开！)</p>
+            </div>
+        </div>
+
+        <div class="note">
+            <p>注意：请合理使用自动回复功能，避免打扰他人或违反微信使用规则。</p>
+        </div>
+    </div>
+</body>
+</html>
