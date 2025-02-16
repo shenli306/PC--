@@ -1,0 +1,275 @@
+:root {
+    --primary-color: #1e90ff;
+    --gradient-start: #87CEEB;
+    --gradient-end: #1E90FF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    background: linear-gradient(to right, #ff89eb, #a7e9ff);
+    min-height: 100vh;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+/* 容器样式，用于居中登录框 */
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;      /* 垂直居中 */
+    justify-content: center;  /* 水平居中 */
+    padding: 2rem;
+}
+
+.box {
+    width: 0;  /* 初始宽度为0 */
+    height: 55rem;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 3rem;
+    box-shadow: 0 1rem 3rem rgba(30, 144, 255, 0.3);
+    overflow: hidden;
+    position: relative;
+    opacity: 0;  /* 初始透明 */
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);  /* 平滑过渡效果 */
+}
+
+/* 展开后的状态 */
+.box.box-expand {
+    width: 90rem;  /* 最终宽度 */
+    opacity: 1;    /* 完全显示 */
+}
+
+/* 隐藏溢出的内容 */
+.left, .right {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transition-delay: 0.3s;  /* 等待盒子展开后再显示内容 */
+}
+
+/* 内容显示动画 */
+.box.box-expand .left,
+.box.box-expand .right {
+    opacity: 1;
+}
+
+/* 为表单元素添加渐入效果 */
+form input, .fn a {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    transition-delay: 0.6s;  /* 在盒子展开后显示 */
+}
+
+.box.box-expand form input,
+.box.box-expand .fn a {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 为每个输入框设置不同的延迟，创造连续展开效果 */
+form input:nth-child(1) { transition-delay: 0.7s; }
+form input:nth-child(2) { transition-delay: 0.8s; }
+form input:nth-child(3) { transition-delay: 0.9s; }
+form input:nth-child(4) { transition-delay: 1.0s; }
+.fn a:nth-child(1) { transition-delay: 1.1s; }
+.fn a:nth-child(2) { transition-delay: 1.2s; }
+
+/* 标题动画 */
+h4 {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.5s ease;
+    transition-delay: 0.6s;
+}
+
+.box.box-expand h4 {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.box::before {
+    content: "♡";
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 3rem;
+    color: var(--primary-color);
+    animation: float 2s ease-in-out infinite;
+}
+
+.left {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5rem;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.8)
+    );
+}
+
+.right {
+    width: 35%;
+    background-image: url('../img/2025_01_07_17_09_IMG_0352.JPG');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+h4 {
+    color: var(--primary-color);
+    font-size: 3.2rem;
+    margin-bottom: 4rem;
+    text-shadow: 0.2rem 0.2rem 0.3rem rgba(255, 105, 180, 0.2);
+    position: relative;
+}
+
+h4::after, h4::before {
+    content: "✧";
+    position: absolute;
+    color: var(--primary-color);
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+h4::after { right: -3rem; }
+h4::before { left: -3rem; }
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.acc {
+    width: 100%;
+    height: 5rem;
+    padding: 1.5rem 2rem;
+    margin: 1rem 0;
+    border: 0.2rem solid #e8e8e8;
+    border-radius: 3rem;
+    font-size: 1.6rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0.4rem 1rem rgba(30, 144, 255, 0.2);
+}
+
+.acc:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    transform: translateY(-0.2rem) scale(1.02);
+    box-shadow: 0 0.6rem 1.5rem rgba(30, 144, 255, 0.3);
+}
+
+.submit {
+    width: 60%;
+    height: 5rem;
+    margin: 3rem auto 0;
+    border: none;
+    border-radius: 3rem;
+    background: linear-gradient(45deg, #87CEEB, #1E90FF);
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0.4rem 1.5rem rgba(30, 144, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.submit:hover {
+    box-shadow: 0 0.6rem 2rem rgba(30, 144, 255, 0.4);
+}
+.submit:active {
+    transform: translateY(-0.1rem);
+}
+
+.submit::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: 0.5s;
+}
+.submit:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+}
+
+.fn {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    margin-top: 3rem;
+}
+
+.fn a {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    position: relative;
+}
+
+.fn a:hover {
+    transform: translateY(-0.2rem);
+}
+
+.fn a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.2rem;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+.fn a:hover::after {
+    transform: scaleX(1);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1rem); }
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+::selection {
+    color: #fff;
+    background-color: var(--primary-color);
+}
+
+.error-message {
+    color: #ff4d4d;
+    background-color: rgba(255, 77, 77, 0.1);
+    border: 1px solid #ff4d4d;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}

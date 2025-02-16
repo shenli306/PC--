@@ -1,0 +1,186 @@
+/* 如果你想将样式分离到单独的文件中 */
+/* 可以将上面style标签中的CSS复制到这个文件中 */ 
+
+.about-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px;
+    background: linear-gradient(145deg, #ffffff, #f5f7fa);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 20px 0;
+}
+
+.about-header h1 {
+    color: #2c3e50;
+    font-size: 3em;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.header-underline {
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, #007bff, #00d2ff);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+.about-section {
+    margin-bottom: 60px;
+    padding: 25px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.about-section h2 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.about-section p {
+    color: #505c6e;
+    line-height: 1.8;
+    font-size: 1.1em;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 30px 25px;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.feature-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    border-color: rgba(0,123,255,0.2);
+}
+
+.feature-item i {
+    font-size: 2.5em;
+    color: #007bff;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #007bff, #00d2ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-item h3 {
+    color: #2c3e50;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.feature-item p {
+    color: #6c757d;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+.hardware-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.hardware-item {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 25px;
+    font-size: 1em;
+    color: #495057;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.hardware-item:hover {
+    background: linear-gradient(135deg, #007bff, #00d2ff);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+}
+
+.contact-info {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.contact-info p {
+    margin: 15px 0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    background: white;
+}
+
+.contact-info p:hover {
+    transform: translateX(10px);
+    background: #f8f9fa;
+}
+
+.contact-info i {
+    margin-right: 15px;
+    color: #007bff;
+    font-size: 1.2em;
+    width: 25px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .about-container {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .about-header h1 {
+        font-size: 2.2em;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .about-section {
+        padding: 20px;
+    }
+
+    .hardware-item {
+        padding: 10px 20px;
+    }
+} 
