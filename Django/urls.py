@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from PAC.views import *
 from PAC import views
+from PAC.views001 import *
 from django.conf.urls import handler404, handler500
 
 urlpatterns = [
@@ -38,6 +39,7 @@ urlpatterns = [
     path("yingpan/", views.yingpan, name='yingpan'),
     path("dianyuan/", views.dianyuan, name='dianyuan'),
     path("logout/", views.logout_view, name='logout'),
+    path("see/", see, name='see'),
 ]
 
 handler404 = 'PAC.views.custom_404'
