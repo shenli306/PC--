@@ -15,11 +15,23 @@
             {% csrf_token %}
             <input type="hidden" name="action" value="crawl">
             <button type="submit" class="update-button">
-                <i class="fas fa-sync-alt"></i> 更新数据
+                <i class="fas fa-sync-alt"></i>
+                更新数据
             </button>
         </form>
     </div>
 </div>
+
+<!-- 在表格上方添加消息显示区域 -->
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
 <div class="filter-section">
     <div class="search-wrapper">
@@ -75,6 +87,23 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- 添加加载动画组件 -->
+<div id="loading-overlay" class="loading-overlay">
+    <div class="loading-content">
+        <div class="loading-animation">
+            <div class="kawaii-loader">
+                Ciallo～(∠・ω< )⌒☆ 
+            </div>
+        </div>
+        <div class="loading-text">
+            <span class="text-animate">努力获取数据中</span>
+            <div class="dots-animate">
+                <span>.</span><span>.</span><span>.</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -258,23 +287,23 @@
     }
 
     .update-button {
-        background: #3498db;
+        background: linear-gradient(135deg, #3498db, #2980b9);
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 0.8rem 1.5rem;
         border-radius: 8px;
         cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 8px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        font-weight: 500;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        font-size: clamp(0.8rem, 1.5vw, 1rem);
     }
 
     .update-button:hover {
-        background: #2980b9;
-        transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
     }
 
     @media (max-width: 768px) {
@@ -310,59 +339,197 @@
             padding: 0.2rem 0.5rem;
         }
     }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(8px);
+    }
+
+    .loading-content {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(0, 123, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .loading-animation {
+        margin-bottom: 2rem;
+    }
+
+    .kawaii-loader {
+        font-size: 3rem;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .loading-text {
+        color: #fff;
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .text-animate {
+        display: inline-block;
+    }
+
+    .dots-animate {
+        display: inline-flex;
+    }
+
+    .dots-animate span {
+        opacity: 0;
+        animation: dotFade 1.4s infinite;
+    }
+
+    .dots-animate span:nth-child(2) { animation-delay: 0.2s; }
+    .dots-animate span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotFade {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
 </style>
 
 <script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// 修改表单提交处理函数
 document.addEventListener('DOMContentLoaded', function() {
+    const updateForm = document.querySelector('.update-form');
+    if (updateForm) {
+        updateForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            showLoading();
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new FormData(this)
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    hideLoading();
+                    alert('更新失败，请稍后重试');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                alert('更新失败，请稍后重试');
+            }
+        });
+    }
+
+    // 其他初始化代码...
+    hideLoading();
+    initializeTableFunctions();
+});
+
+function showLoading() {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'flex';
+    }
+}
+
+function hideLoading() {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'none';
+    }
+}
+
+// 将表格相关功能封装到单独的函数中
+function initializeTableFunctions() {
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
     const table = document.getElementById('hardwareTable');
 
-    function filterAndSortTable() {
-        const rows = Array.from(table.querySelectorAll('tbody tr'));
-        const searchTerm = searchInput.value.toLowerCase();
-        const sortValue = sortSelect.value;
+    if (searchInput && sortSelect && table) {
+        function filterAndSortTable() {
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            const searchTerm = searchInput.value.toLowerCase();
+            const sortValue = sortSelect.value;
 
-        rows.forEach(row => {
-            const text = row.querySelector('.model-cell').textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-
-        if (sortValue !== 'default') {
-            const visibleRows = rows.filter(row => row.style.display !== 'none');
-            visibleRows.sort((a, b) => {
-                let aValue, bValue;
-                
-                switch(sortValue) {
-                    case 'price-asc':
-                    case 'price-desc':
-                        aValue = parseFloat(a.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
-                        bValue = parseFloat(b.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
-                        break;
-                    case 'score-desc':
-                        aValue = parseFloat(a.querySelector('.score-cell').textContent);
-                        bValue = parseFloat(b.querySelector('.score-cell').textContent);
-                        break;
-                    case 'comments-desc':
-                        aValue = parseInt(a.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
-                        bValue = parseInt(b.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
-                        break;
-                }
-
-                if (sortValue.endsWith('-desc')) {
-                    return bValue - aValue;
-                }
-                return aValue - bValue;
+            rows.forEach(row => {
+                const text = row.querySelector('.model-cell').textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
 
-            const tbody = table.querySelector('tbody');
-            visibleRows.forEach(row => tbody.appendChild(row));
-        }
-    }
+            if (sortValue !== 'default') {
+                const visibleRows = rows.filter(row => row.style.display !== 'none');
+                visibleRows.sort((a, b) => {
+                    let aValue, bValue;
+                    
+                    switch(sortValue) {
+                        case 'price-asc':
+                        case 'price-desc':
+                            aValue = parseFloat(a.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
+                            bValue = parseFloat(b.querySelector('.price-cell').textContent.replace(/[^\d.-]/g, ''));
+                            break;
+                        case 'score-desc':
+                            aValue = parseFloat(a.querySelector('.score-cell').textContent);
+                            bValue = parseFloat(b.querySelector('.score-cell').textContent);
+                            break;
+                        case 'comments-desc':
+                            aValue = parseInt(a.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
+                            bValue = parseInt(b.querySelector('.comments-cell').textContent.replace(/[^\d]/g, ''));
+                            break;
+                    }
 
-    searchInput.addEventListener('input', filterAndSortTable);
-    sortSelect.addEventListener('change', filterAndSortTable);
-});
+                    if (sortValue.endsWith('-desc')) {
+                        return bValue - aValue;
+                    }
+                    return aValue - bValue;
+                });
+
+                const tbody = table.querySelector('tbody');
+                visibleRows.forEach(row => tbody.appendChild(row));
+            }
+        }
+
+        searchInput.addEventListener('input', filterAndSortTable);
+        sortSelect.addEventListener('change', filterAndSortTable);
+    }
+}
 
 window.hardwareConfig = {
     title: '内存信息',

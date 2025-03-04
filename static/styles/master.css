@@ -1,0 +1,3025 @@
+
+/* 设置字符编码为UTF-8 */
+@charset "UTF-8";
+
+/* 重置所有元素的默认样式 */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0; /* 外边距设置为0 */
+  padding: 0; /* 内边距设置为0 */
+  border: 0; /* 边框设置为0 */
+  outline: 0; /* 轮廓设置为0 */
+  font-size: 100%; /* 字体大小设置为100% */
+  vertical-align: baseline; /* 垂直对齐方式设置为基线 */
+  background: transparent; /* 背景设置为透明 */
+}
+
+/* 设置body的行高为1 */
+body {
+  line-height: 1;
+}
+
+/* 设置块级元素的默认显示方式为块级 */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* 移除列表的默认样式 */
+nav ul, li {
+  list-style: none;
+}
+
+/* 移除引用的默认样式 */
+blockquote, q {
+  quotes: none;
+}
+
+/* 移除引用前后的内容 */
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+/* 设置超链接的默认样式 */
+a {
+  margin: 0; /* 外边距设置为0 */
+  padding: 0; /* 内边距设置为0 */
+  font-size: 100%; /* 字体大小设置为100% */
+  vertical-align: baseline; /* 垂直对齐方式设置为基线 */
+  background: transparent; /* 背景设置为透明 */
+}
+
+/* 下划线样式 */
+ins {
+  background-color: #ff9; /* 背景颜色设置为黄色 */
+  color: #000; /* 文字颜色设置为黑色 */
+  text-decoration: none; /* 移除下划线 */
+}
+
+/* 高亮样式 */
+mark {
+  background-color: #ff9; /* 背景颜色设置为黄色 */
+  color: #000; /* 文字颜色设置为黑色 */
+  font-style: italic; /* 字体样式设置为斜体 */
+  font-weight: bold; /* 字体粗细设置为粗体 */
+}
+
+/* 删除线样式 */
+del {
+  text-decoration: line-through; /* 添加删除线 */
+}
+
+/* 缩写和定义的样式 */
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted; /* 下方添加点状边框 */
+  cursor: help; /* 鼠标悬停时显示帮助图标 */
+}
+
+/* 表格样式 */
+table {
+  border-collapse: collapse; /* 合并单元格边框 */
+  border-spacing: 0; /* 单元格间距设置为0 */
+}
+
+/* 水平分割线样式 */
+hr {
+  display: block; /* 设置为块级元素 */
+  height: 1px; /* 高度设置为1像素 */
+  border: 0; /* 移除边框 */
+  border-top: 1px solid #cccccc; /* 上方添加1像素灰色实线 */
+  margin: 1em 0; /* 上下外边距设置为1em，左右为0 */
+  padding: 0; /* 内边距设置为0 */
+}
+
+/* 输入和选择元素的垂直对齐方式 */
+input, select {
+  vertical-align: middle; /* 垂直对齐方式设置为居中 */
+}
+
+/* ============================================== */
+/* 通用设置 */
+/* ============================================== */
+
+/* 页面基础样式 */
+html, body {
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+
+/* 页面背景和字体设置 */
+body {
+  background: #fff; /* 背景颜色设置为白色 */
+  color: #82909a; /* 文字颜色设置为灰色 */
+  -webkit-backface-visibility: hidden; /* 隐藏背面 */
+          backface-visibility: hidden; /* 隐藏背面 */
+  font-family: 'Microsoft YaHei', 'Droid Sans Fallback', SimHei, Arial, Helvetica, tahoma, sans-serif; /* 字体设置 */
+  font-size: 16px; /* 字体大小设置为16像素 */
+  font-size: 16px; /* 字体大小设置为16像素（重复设置以确保兼容性） */
+  font-size: 1rem; /* 字体大小设置为1rem */
+  line-height: 1; /* 行高设置为1 */
+}
+
+/* 主要和章节元素的宽度和高度设置 */
+main,
+section {
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+
+/* 超链接的默认样式和鼠标悬停效果 */
+a {
+  color: inherit; /* 文字颜色继承父元素 */
+  outline: none; /* 轮廓设置为无 */
+  text-decoration: none; /* 文字下划线设置为无 */
+}
+
+/* 特定类名的链接过渡效果 */
+.l-social a,
+.intro-btn-skip a,
+.footer-menu a,
+.l-news-wrap a,
+.movie-btn a,
+.first-btn-1st a {
+  opacity: 1; /* 不透明度设置为1 */
+  filter: alpha(opacity=100); /* IE8及以下版本不透明度设置为100 */
+  -webkit-transition: 0.3s; /* 过渡效果设置为0.3秒 */
+          transition: 0.3s; /* 过渡效果设置为0.3秒 */
+}
+.l-social a:hover,
+.intro-btn-skip a:hover,
+.footer-menu a:hover,
+.l-news-wrap a:hover,
+.movie-btn a:hover,
+.first-btn-1st a:hover {
+  opacity: 0.5; /* 鼠标悬停时不透明度设置为0.5 */
+  filter: alpha(opacity=50); /* IE8及以下版本不透明度设置为50 */
+  -webkit-transition: 0.3s; /* 过渡效果设置为0.3秒 */
+          transition: 0.3s; /* 过渡效果设置为0.3秒 */
+}
+
+/* 视图切换类 */
+.pcv {
+  display: block; /* 显示方式设置为块级 */
+}
+
+.spv {
+  display: none; /* 显示方式设置为隐藏 */
+}
+
+/* 图片视图切换 */
+img.pcv {
+  display: inline; /* 显示方式设置为内联 */
+}
+
+img.spv {
+  display: none; /* 显示方式设置为隐藏 */
+}
+
+/* 舞台样式 */
+.l-stage {
+  position: relative; /* 定位设置为相对定位 */
+  overflow: hidden; /* 溢出内容隐藏 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+  min-width: 1200px; /* 最小宽度设置为1200像素 */
+  min-height: 800px; /* 最小高度设置为800像素 */
+}
+
+/* 封面样式 */
+.cover {
+  display: none; /* 显示方式设置为隐藏 */
+  background: #fff; /* 背景颜色设置为白色 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+  position: fixed; /* 定位设置为固定定位 */
+  top: 0; /* 顶部位置设置为0 */
+  left: 0; /* 左侧位置设置为0 */
+  z-index: 100; /* 层级设置为100 */
+  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter  id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="linear" slope="1" /><feFuncG type="linear" slope="1" /><feFuncB type="linear" slope="1" /></feComponentTransfer></filter></svg>#filter'); /* 应用SVG滤镜 */
+  -webkit-filter: brightness(100%); /* 亮度设置为100% */
+          filter: brightness(100%); /* 亮度设置为100% */
+}
+
+/* ============================================== */
+/* 引言部分样式 */
+/* ============================================== */
+
+/* 引言背景样式 */
+.l-intro {
+  background: #fff; /* 背景颜色设置为白色 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+  min-width: 1200px;
+  min-height: 800px;
+  position: absolute;
+  z-index: 100;
+  overflow: hidden;
+}
+
+
+/* 跳过引导按钮的样式 */
+.intro-btn-skip {
+  position: fixed; /* 固定定位 */
+  top: 31px; /* 距离顶部31像素 */
+  right: 40px; /* 距离右侧40像素 */
+  z-index: 1000; /* 层级设置为1000 */
+  opacity: 0; /* 不透明度设置为0，即完全透明 */
+  filter: alpha(opacity=0); /* 对于旧版IE的不透明度设置 */
+}
+
+/* 跳过引导按钮内的链接样式 */
+.intro-btn-skip a {
+  display: block; /* 显示为块级元素 */
+  color: #000; /* 文字颜色设置为黑色 */
+  font-size: 14px; /* 字体大小设置为14像素 */
+  -webkit-font-smoothing: antialiased; /* 使用抗锯齿字体平滑处理 */
+  font-style: italic; /* 字体样式设置为斜体 */
+  letter-spacing: 0.5px; /* 字母间距设置为0.5像素 */
+  background: url("../images/teaser/intro_ico_skip.png") no-repeat right 3px; /* 背景图片设置，不重复，且图片位置在右侧3像素 */
+  padding: 0 15px 0 0; /* 内边距设置，左侧0，右侧15像素，上下为0 */
+}
+
+/* 引导内容内部容器的样式 */
+.l-intro-inner {
+  position: absolute; /* 绝对定位 */
+  width: 10000px; /* 宽度设置为10000像素 */
+  height: 10000px; /* 高度设置为10000像素 */
+}
+
+/* 隐藏特定设备视图的引导内容 */
+.intro-box-vsl-sp,
+.intro-box-text-sp {
+  display: none; /* 显示方式设置为隐藏 */
+}
+
+/* 引导盒子的通用样式 */
+.intro-box,
+.intro-box-text,
+.intro-box-name,
+.intro-box-movie,
+.intro-box-movie .movie-mask,
+#intro-box-megumi {
+  position: absolute; /* 绝对定位 */
+  z-index: 0; /* 层级设置为0 */
+}
+
+/* 引导盒子的样式 */
+.intro-box {
+  display: none; /* 显示方式设置为隐藏 */
+  width: 1200px; /* 宽度设置为1200像素 */
+  height: 800px; /* 高度设置为800像素 */
+  top: 0; /* 顶部位置设置为0 */
+  bottom: 0; /* 底部位置设置为0 */
+  left: 0; /* 左侧位置设置为0 */
+  right: 0; /* 右侧位置设置为0 */
+  margin: auto; /* 外边距自动设置，水平居中 */
+}
+
+/* 引导盒子内的图片、文本和名称的初始透明度 */
+.intro-box-movie,
+.intro-box-text,
+.intro-box-name {
+  opacity: 0; /* 不透明度设置为0，即完全透明 */
+  filter: alpha(opacity=0); /* 对于旧版IE的不透明度设置 */
+}
+
+/* 特定引导盒子的样式 */
+#intro-box-eriri .intro-box-movie {
+  left: 78px; /* 左侧位置设置为78像素 */
+  top: 243px; /* 顶部位置设置为243像素 */
+}
+#intro-box-eriri .intro-box-text {
+  background: url("../images/teaser/intro_eriri_text.png") no-repeat 0 0; /* 背景图片设置，不重复，位置为0 */
+  left: 888px; /* 左侧位置设置为888像素 */
+  top: 139px; /* 顶部位置设置为139像素 */
+  width: 178px; /* 宽度设置为178像素 */
+  height: 477px; /* 高度设置为477像素 */
+}
+#intro-box-eriri .intro-box-name {
+  background: url("../images/teaser/intro_eriri_name.png") no-repeat 0 0; /* 背景图片设置，不重复，位置为0 */
+  left: 838px; /* 左侧位置设置为838像素 */
+  top: 137px; /* 顶部位置设置为137像素 */
+  width: 10px; /* 宽度设置为10像素 */
+  height: 223px; /* 高度设置为223像素 */
+}
+
+/* 其他引导盒子的样式，类似上述样式，根据实际内容进行调整 */
+#intro-box-utaha .intro-box-movie {
+  left: 380px; /* 左侧位置设置为380像素 */
+  top: 265px; /* 顶部位置设置为265像素 */
+}
+#intro-box-utaha .intro-box-text {
+  background: url("../images/teaser/intro_utaha_text.png") no-repeat 0 0; /* 背景图片设置，不重复，位置为0 */
+  left: 133px; /* 左侧位置设置为133像素 */
+  top: 97px; /* 顶部位置设置为97像素 */
+  width: 469px; /* 宽度设置为469像素 */
+  height: 155px; /* 高度设置为155像素 */
+}
+#intro-box-utaha .intro-box-name {
+  background: url("../images/teaser/intro_utaha_name.png") no-repeat 0 0; /* 背景图片设置，不重复，位置为0 */
+  left: 132px; /* 左侧位置设置为132像素 */
+  top: 296px; /* 顶部位置设置为296像素 */
+  width: 184px; /* 宽度设置为184像素 */
+  height: 10px; /* 高度设置为10像素 */
+}
+
+/* 其他引导盒子的样式，类似上述样式，根据实际内容进行调整 */
+#intro-box-izumi .intro-box-movie {
+  left: 50px; /* 左侧位置设置为50像素 */
+  top: 104px; /* 顶部位置设置为104像素 */
+}
+#intro-box-izumi .intro-box-text {
+  background: url("../images/teaser/intro_izumi_text.png") no-repeat 0 0; /* 背景图片设置，不重复，位置为0 */
+  left: 542px; /* 左侧位置设置为542像素 */
+  top: 552px; /* 顶部位置设置为552像素 */
+  width: 556px; /* 宽度设置为556像素 */
+  height: 95px; /* 高度设置为95像素 */
+}
+css
+/* 特定引导盒子的样式 */
+#intro-box-izumi .intro-box-name {
+  background: url("../images/teaser/intro_izumi_name.png") no-repeat 0 0; /* 使用指定背景图片，不重复，位置为0 */
+  left: 542px; /* 左侧位置设置为542像素 */
+  top: 679px; /* 顶部位置设置为679像素 */
+  width: 130px; /* 宽度设置为130像素 */
+  height: 10px; /* 高度设置为10像素 */
+}
+
+#intro-box-michiru .intro-box-movie {
+  left: 301px; /* 左侧位置设置为301像素 */
+  top: 99px; /* 顶部位置设置为99像素 */
+}
+
+#intro-box-michiru .intro-box-text {
+  background: url("../images/teaser/intro_michiru_text.png") no-repeat 0 0; /* 使用指定背景图片，不重复，位置为0 */
+  left: 129px; /* 左侧位置设置为129像素 */
+  top: 292px; /* 顶部位置设置为292像素 */
+  width: 158px; /* 宽度设置为158像素 */
+  height: 380px; /* 高度设置为380像素 */
+}
+
+#intro-box-michiru .intro-box-name {
+  background: url("../images/teaser/intro_michiru_name.png") no-repeat 0 0; /* 使用指定背景图片，不重复，位置为0 */
+  left: 88px; /* 左侧位置设置为88像素 */
+  top: 295px; /* 顶部位置设置为295像素 */
+  width: 9px; /* 宽度设置为9像素 */
+  height: 134px; /* 高度设置为134像素 */
+}
+
+/* 特定引导盒子的隐藏样式 */
+#intro-box-megumi {
+  display: none; /* 显示方式设置为隐藏 */
+  width: 1200px; /* 宽度设置为1200像素 */
+  height: 800px; /* 高度设置为800像素 */
+  top: 0; /* 顶部位置设置为0 */
+  bottom: 0; /* 底部位置设置为0 */
+  left: 0; /* 左侧位置设置为0 */
+  right: 0; /* 右侧位置设置为0 */
+  margin: auto; /* 外边距自动设置，水平和垂直居中 */
+}
+
+/* 特定引导盒子的视觉元素样式 */
+#intro-box-megumi .intro-box-visual {
+  background: url("../images/teaser/intro_megumi.png") no-repeat 0 0; /* 使用指定背景图片，不重复，位置为0 */
+  position: absolute; /* 绝对定位 */
+  top: -180px; /* 顶部位置设置为-180像素 */
+  left: 0; /* 左侧位置设置为0 */
+  right: 0; /* 右侧位置设置为0 */
+  margin: auto; /* 外边距自动设置，水平和垂直居中 */
+  width: 754px; /* 宽度设置为754像素 */
+  height: 1286px; /* 高度设置为1286像素 */
+}
+
+/* 特定引导盒子的视觉元素的测试样式 */
+#intro-box-megumi .intro-box-visual.test {
+  background-size: 100% auto; /* 背景图片尺寸设置为宽度100%，高度自动 */
+  left: 181px; /* 左侧位置设置为181像素 */
+  top: 40px; /* 顶部位置设置为40像素 */
+  right: auto; /* 右侧位置自动 */
+  width: 481px; /* 宽度设置为481像素 */
+  height: 839px; /* 高度设置为839像素 */
+}
+
+/* 特定引导盒子的文本样式 */
+#intro-box-megumi .intro-box-text {
+  background: url("../images/teaser/intro_megumi_text.png") no-repeat 0 0; /* 使用指定背景图片，不重复，位置为0 */
+  position: absolute; /* 绝对定位 */
+  left: 721px; /* 左侧位置设置为721像素 */
+  top: 215px; /* 顶部位置设置为215像素 */
+  width: 267px; /* 宽度设置为267像素 */
+  height: 297px; /* 高度设置为297像素 */
+}
+
+/* -------------------- */
+/* 文本样式 */
+/* -------------------- */
+.intro-box-text {
+  z-index: 1; /* 层级设置为1 */
+}
+
+/* -------------------- */
+/* 名称样式 */
+/* -------------------- */
+.intro-box-name {
+  z-index: 1; /* 层级设置为1 */
+}
+
+/* -------------------- */
+/* 电影样式 */
+/* -------------------- */
+.intro-box-movie {
+  width: 759px; /* 宽度设置为759像素 */
+  height: 427px; /* 高度设置为427像素 */
+  z-index: 0; /* 层级设置为0 */
+}
+.intro-box-movie:before {
+  content: ""; /* 伪元素内容为空 */
+  display: block; /* 显示为块级元素 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100px; /* 高度设置为100像素 */
+  background: #fff; /* 背景颜色设置为白色 */
+  position: absolute; /* 绝对定位 */
+  top: -100px; /* 顶部位置设置为-100像素 */
+  z-index: 100; /* 层级设置为100 */
+}
+.intro-box-movie:after {
+  content: ""; /* 伪元素内容为空 */
+  display: block; /* 显示为块级元素 */
+  width: 100%; /* 宽度设置为100% */
+  height: 50px; /* 高度设置为50像素 */
+  background: #fff; /* 背景颜色设置为白色 */
+  position: absolute; /* 绝对定位 */
+  bottom: -50px; /* 底部位置设置为-50像素 */
+  z-index: 100; /* 层级设置为100 */
+}
+.intro-box-movie .movie-mask {
+  background: url("../images/teaser/intro_mask.png") no-repeat 0 0; /* 使用指定背景图片，不重复，位置为0 */
+  top: 0; /* 顶部位置设置为0 */
+  left: 0; /* 左侧位置设置为0 */
+  z-index: 10; /* 层级设置为10 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+.intro-box-movie .movie-mask:before {
+  content: ""; /* 伪元素内容为空 */
+  display: block; /* 显示为块级元素 */
+  height: 100%; /* 高度设置为100% */
+  width: 100px; /* 宽度设置为100像素 */
+  background: #fff; /* 背景颜色设置为白色 */
+  position: absolute; /* 绝对定位 */
+  left: -100px; /* 左侧位置设置为-100像素 */
+  z-index: 100; /* 层级设置为100 */
+}
+.intro-box-movie .movie-mask:after {
+  content: ""; /* 伪元素内容为空 */
+  display: block; /* 显示为块级元素 */
+  height: 100%; /* 高度设置为100% */
+  width: 50px; /* 宽度设置为50像素 */
+  background: #fff; /* 背景颜色设置为白色 */
+  position: absolute; /* 绝对定位 */
+  right: -50px; /* 右侧位置设置为-50像素 */
+  z-index: 100; /* 层级设置为100 */
+}
+
+/* ============================================== */
+/* 主要内容样式 */
+/* ============================================== */
+
+/* 主要布局容器样式 */
+.l-main {
+  display: block; /* 显示为块级元素 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+
+/* 第一部分的固定定位样式 */
+.l-first {
+  position: fixed; /* 固定定位 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左侧对齐 */
+  z-index: 1; /* 层级设置为1 */
+  overflow: hidden; /* 溢出内容隐藏 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+
+/* 第一部分的Logo样式 */
+.first-logo {
+  position: fixed; /* 固定定位 */
+  left: 0; /* 左侧对齐 */
+  bottom: -3px; /* 底部位置设置为-3像素 */
+  z-index: 101; /* 层级设置为101 */
+}
+
+/* 第一部分的主要文本样式 */
+.first-text-main {
+  pointer-events: none; /* 忽略鼠标事件 */
+  position: absolute; /* 绝对定位 */
+  left: 646px; /* 左侧位置设置为646像素 */
+  top: 141px; /* 顶部位置设置为141像素 */
+  z-index: 100; /* 层级设置为100 */
+}
+
+/* 第一部分的日期样式 */
+.first-date {
+  position: absolute; /* 绝对定位 */
+  right: 0; /* 右侧对齐 */
+  bottom: 0; /* 底部对齐 */
+  z-index: 101; /* 层级设置为101 */
+}
+.first-date p {
+  float: left; /* 浮动到左侧 */
+  margin-right: 25px; /* 右侧外边距设置为25像素 */
+}
+.first-date li {
+  float: left; /* 浮动到左侧 */
+  margin-right: 30px; /* 右侧外边距设置为30像素 */
+}
+.first-date li:last-child {
+  margin-right: 0; /* 最后一个元素的右侧外边距设置为0 */
+}
+
+/* 第一部分的第一个按钮样式 */
+.first-btn-1st {
+  position: fixed; /* 固定定位 */
+  left: 30px; /* 左侧位置设置为30像素 */
+  top: 30px; /* 顶部位置设置为30像素 */
+  z-index: 100; /* 层级设置为100 */
+}
+
+/* 第一部分的背景层样式 */
+.first-bg,
+.first-megumi-back,
+.first-megumi-front,
+.first-flare-wrap,
+.first-flare01,
+.first-flare02 {
+  pointer-events: none; /* 忽略鼠标事件 */
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左侧对齐 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+  min-width: 1200px; /* 最小宽度设置为1200像素 */
+  min-width: 800px; /* 最小宽度设置为800像素（重复设置以确保兼容性） */
+}
+
+/* 第一部分的背景图片样式 */
+.first-bg {
+  background: url("../images/teaser/main_bg_l.jpg") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+}
+
+/* 第一部分的背景层样式（Megumi的背景） */
+.first-megumi-back {
+  background: url("../images/teaser/main_megumi_back_l.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+}
+
+/* 第一部分的前景层样式（Megumi的前景） */
+.first-megumi-front {
+  background: url("../images/teaser/main_megumi_front_l.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+}
+
+/* 第一部分的光晕效果样式 */
+.first-flare01 {
+  background: url("../images/teaser/main_flare01.png") repeat-x center; /* 背景图片设置，横向重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+  z-index: 10; /* 层级设置为10 */
+}
+
+.first-flare02 {
+  background: url("../images/teaser/main_flare02.png") repeat-x center; /* 背景图片设置，横向重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+  z-index: 10; /* 层级设置为10 */
+}
+
+/* -------------------- */
+/* 樱花显示层样式 */
+/* -------------------- */
+.sakura-front {
+  position: fixed; /* 固定定位 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左侧对齐 */
+  z-index: 1; /* 层级设置为1 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+  pointer-events: none; /* 忽略鼠标事件 */
+}
+
+/* 樱花前景层样式 */
+.sakura-front-l,
+.sakura-front-m,
+.sakura-front-s {
+  position: fixed; /* 固定定位 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左侧对齐 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+
+/* 樱花前景层（大）样式 */
+.sakura-front-l {
+  background: url("../images/teaser/main_sakura_front_l.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+  z-index: 3; /* 层级设置为3 */
+}
+
+/* 樱花前景层（中）样式 */
+.sakura-front-m {
+  background: url("../images/teaser/main_sakura_front_m.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+  z-index: 2; /* 层级设置为2 */
+}
+
+/* 樱花前景层（小）样式 */
+.sakura-front-s {
+  background: url("../images/teaser/main_sakura_front_s.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  background-size: cover; /* 背景图片尺寸覆盖整个元素 */
+  z-index: 1; /* 层级设置为1 */
+}
+
+/* 樱花背景层样式 */
+.sakura-back {
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左侧对齐 */
+  z-index: 0; /* 层级设置为0 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+  pointer-events: none; /* 忽略鼠标事件 */
+}
+
+/* 樱花背景层样式 */
+.sakura-back-l,
+.sakura-back-m,
+.sakura-back-s {
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左侧对齐 */
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+
+/* 樱花背景层（大）样式 */
+.sakura-back-l {
+  background: url("../images/teaser/main_sakura_back_l.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  z-index: 3; /* 层级设置为3 */
+}
+
+/* 樱花背景层（中）样式 */
+.sakura-back-m {
+  background: url("../images/teaser/main_sakura_back_m.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  z-index: 2; /* 层级设置为2 */
+}
+
+/* 樱花背景层（小）样式 */
+.sakura-back-s {
+  background: url("../images/teaser/main_sakura_back_s.png") no-repeat center; /* 背景图片设置，不重复，居中对齐 */
+  z-index: 1; /* 层级设置为1 */
+}
+
+/* -------------------- */
+/* 用于拖动的位置调整样式 */
+/* -------------------- */
+/* 第一部分背景层和樱花前景层的样式调整 */
+.first-bg,
+.first-megumi-back,
+.first-megumi-front,
+.sakura-front {
+  width: 104%; /* 宽度设置为104%，超出父元素 */
+  height: 104%; /* 高度设置为104%，超出父元素 */
+  left: -2%; /* 左侧位置偏移为-2% */
+  top: -2%; /* 顶部位置偏移为-2% */
+}
+
+/* ============================================== */
+/* 主要内容第二部分样式 */
+/* ============================================== */
+
+/* 确保第一视角的固定层 */
+.l-fix {
+  width: 100%; /* 宽度设置为100% */
+  height: 100%; /* 高度设置为100% */
+}
+
+/* 第二部分的样式 */
+.l-second {
+  background: #fff; /* 背景颜色设置为白色 */
+  position: relative; /* 相对定位 */
+  z-index: 2; /* 层级设置为2 */
+  width: 100%; /* 宽度设置为100% */
+  overflow: hidden; /* 隐藏溢出的内容 */
+}
+
+/* -------------------- */
+/* 电影层样式 */
+/* -------------------- */
+.l-movie {
+  position: relative; /* 相对定位 */
+  width: 100%; /* 宽度设置为100% */
+  height: 500px; /* 高度设置为500像素 */
+  overflow: hidden; /* 隐藏溢出的内容 */
+}
+.l-movie:before {
+  content: ""; /* 伪元素内容为空 */
+  display: block; /* 显示为块级元素 */
+  background: #fd709f; /* 背景颜色设置为粉色 */
+  opacity: 0.6; /* 不透明度设置为0.6 */
+  filter: alpha(opacity=60); /* 对于旧版IE的不透明度设置 */
+  width: 100%; /* 宽度设置为100% */
+  height: 101%; /* 高度设置为101%，超出元素本身 */
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部对齐 */
+  left: 0; /* 左侧对齐 */
+  z-index: 3; /* 层级设置为3 */
+}
+.l-movie.is-active:before {
+  display: none; /* 当类名为is-active时，隐藏该元素 */
+}
+
+/* 电影按钮样式 */
+.movie-btn {
+  position: absolute; /* 绝对定位 */
+  top: 22%; /* 顶部位置设置为22% */
+  left: 0; /* 左侧对齐 */
+  right: 0; /* 右侧对齐 */
+  margin: auto; /* 水平居中 */
+}
+
+/* 播放按钮和YouTube按钮样式 */
+.movie-btn-play,
+.movie-btn-youtube {
+  position: relative; /* 相对定位 */
+  z-index: 4; /* 层级设置为4 */
+  display: table; /* 显示为表格 */
+  margin: auto; /* 水平居中 */
+}
+
+/* 播放按钮的尺寸 */
+.movie-btn-play {
+  width: 401px; /* 宽度设置为401像素 */
+  height: 257px; /* 高度设置为257像素 */
+  margin: 0 auto 15px; /* 上下外边距为0，左右自动，底部外边距为15像素 */
+}
+
+/* YouTube按钮的文本样式 */
+.movie-btn-youtube a {
+  color: #fff; /* 文字颜色设置为白色 */
+  font-size: 15px; /* 字体大小设置为15像素 */
+  line-height: 1; /* 行高设置为1 */
+  -webkit-font-smoothing: antialiased; /* 使用抗锯齿字体平滑处理 */
+  display: table; /* 显示为表格 */
+  margin: 0 auto; /* 水平居中 */
+}
+
+/* 电影播放器样式 */
+#movie-player {
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部对齐 */
+  min-width: 100%; /* 最小宽度设置为100% */
+  min-height: 100%; /* 最小高度设置为100% */
+  width: auto; /* 宽度自动 */
+  height: auto; /* 高度自动 */
+  z-index: 2; /* 层级设置为2 */
+}
+
+/* -------------------- */
+/* 布局共通设置 */
+/* -------------------- */
+.l-re_air,
+.l-staff,
+.l-news-wrap {
+  position: relative; /* 相对定位 */
+  z-index: 1; /* 层级设置为1 */
+  width: 1020px; /* 宽度设置为1020像素 */
+  margin: auto; /* 水平居中 */
+}
+
+/* -------------------- */
+/* 1期再放送介绍样式 */
+/* -------------------- */
+.l-re_air {
+  padding: 100px 0 0; /* 上边距为100像素，左右和下边距为0 */
+}
+
+/* 再放送标题样式 */
+.re_air-title {
+  display: table; /* 显示为表格 */
+  margin: 0 auto 20px; /* 上下外边距为0，左右自动，底部外边距为20像素 */
+}
+
+/* 再放送描述样式 */
+.re_air-desc {
+  display: table; /* 显示为表格 */
+  margin: 0 auto; /* 上下外边距为0，左右自动 */
+}
+
+/* -------------------- */
+/* スタッフクレジット（制作人员名单）样式 */
+/* -------------------- */
+.l-staff {
+  font-size: 0; /* 字体大小设置为0，用于移除内联元素的默认间距 */
+  text-align: center; /* 文本居中对齐 */
+  padding: 100px 0 0; /* 上边距为100像素，左右和下边距为0 */
+  overflow: hidden; /* 隐藏溢出的内容 */
+}
+.l-staff p {
+  vertical-align: top; /* 内联元素顶部对齐 */
+}
+
+/* 制作人员名单的布局样式 */
+.staff-01 {
+  display: inline-block; /* 显示为内联块级元素 */
+  margin: 0 38px 0; /* 上下外边距为0，左右外边距为38像素 */
+}
+
+/* 其他制作人员名单的样式，根据实际内容进行调整 */
+/* ...省略其他样式... */
+
+/* -------------------- */
+/* SHARE按钮样式 */
+/* -------------------- */
+.l-social {
+  display: none; /* 默认不显示 */
+  font-size: 0; /* 字体大小设置为0，用于移除内联元素的默认间距 */
+  position: fixed; /* 固定定位 */
+  right: 30px; /* 右侧距离为30像素 */
+  top: 30px; /* 顶部距离为30像素 */
+  z-index: 100; /* 层级设置为100 */
+  width: 180px; /* 宽度设置为180像素 */
+  overflow: hidden; /* 隐藏溢出的内容 */
+}
+.l-social p {
+  float: left; /* 浮动到左侧 */
+  margin-right: 25px; /* 右侧外边距为25像素 */
+}
+.l-social li {
+  float: left; /* 浮动到左侧 */
+  margin-right: 30px; /* 右侧外边距为30像素 */
+}
+.l-social li:last-child {
+  margin-right: 0; /* 最后一个元素的右侧外边距设置为0 */
+}
+
+/* 移动设备上的SHARE按钮样式 */
+.l-social-sp {
+  display: none; /* 默认不显示 */
+}
+
+/* -------------------- */
+/* 外部链接等样式 */
+/* -------------------- */
+/* ...省略其他样式... */
+
+/* 制作人员名单的布局样式（续） */
+.staff-02 {
+  display: inline-block; /* 显示为内联块级元素 */
+  margin: 0; /* 外边距设置为0 */
+}
+
+/* 制作人员名单的布局样式（续） */
+.staff-03 {
+  display: table; /* 显示为表格 */
+  margin: 40px auto 0; /* 上边距为40像素，左右自动，下边距为0 */
+}
+
+/* 制作人员名单的布局样式（续） */
+.staff-04 {
+  display: table; /* 显示为表格 */
+  margin: 80px auto 0; /* 上边距为80像素，左右自动，下边距为0 */
+}
+
+/* -------------------- */
+/* 官方Twitter样式 */
+/* -------------------- */
+.l-news-wrap {
+  overflow: hidden; /* 隐藏溢出的内容 */
+  font-size: 0; /* 字体大小设置为0，用于移除内联元素的默认间距 */
+  padding: 150px 0 0; /* 上边距为150像素，左右和下边距为0 */
+}
+.l-news-wrap iframe {
+  border: 1px solid #b0c1cd !important; /* 边框设置为1像素的灰色，且重要性设置为!important */
+  box-sizing: border-box; /* 盒模型设置为边框盒模型 */
+}
+
+/* 新闻部分的样式 */
+.l-news {
+  float: left; /* 浮动到左侧 */
+  width: 500px; /* 宽度设置为500像素 */
+}
+
+/* Twitter部分的样式 */
+.l-twitter {
+  float: right; /* 浮动到右侧 */
+  width: 500px; /* 宽度设置为500像素 */
+}
+.l-twitter .link-btn-1st_site {
+  display: none; /* 默认不显示 */
+}
+
+/* 新闻标题和Twitter标题的样式 */
+.news-title,
+.twitter-title {
+  text-align: center; /* 文本居中对齐 */
+  line-height: 0; /* 行高设置为0 */
+  margin: 0 auto; /* 上下外边距为0，左右自动 */
+  padding: 18px 0 16px; /* 上边距为18像素，下边距为16像素 */
+  border: 1px solid #b0c1cd; /* 边框设置为1像素的灰色 */
+  border-bottom: 0px none; /* 底部边框设置为无 */
+  border-radius: 8px 8px 0 0; /* 边框圆角设置，上左和上右为8像素，下为0 */
+}
+
+/* -------------------- */
+/* SHARE按钮样式（续） */
+/* -------------------- */
+.l-social {
+  display: none; /* 默认不显示 */
+  font-size: 0; /* 字体大小设置为0，用于移除内联元素的默认间距 */
+  position: fixed; /* 固定定位 */
+  right: 30px; /* 右侧距离为30像素 */
+  top: 30px; /* 顶部距离为30像素 */
+  z-index: 100; /* 层级设置为100 */
+  width: 180px; /* 宽度设置为180像素 */
+  overflow: hidden; /* 隐藏溢出的内容 */
+}
+.l-social p {
+  float: left; /* 浮动到左侧 */
+  margin-right: 25px; /* 右侧外边距为25像素 */
+}
+.l-social li {
+  float: left; /* 浮动到左侧 */
+  margin-right: 30px; /* 右侧外边距为30像素 */
+}
+.l-social li:last-child {
+  margin-right: 0; /* 最后一个元素的右侧外边距设置为0 */
+}
+
+/* 移动设备上的SHARE按钮样式 */
+.l-social-sp {
+  display: none; /* 默认不显示 */
+}
+
+/* -------------------- */
+/* 外部链接按钮样式 */
+/* -------------------- */
+.news-btn-more,
+.twitter-btn-more,
+.link-btn-1st_site,
+.link-btn-radio {
+  width: 100%; /* 宽度设置为100% */
+  border: 1px solid; /* 边框设置为1像素的实线 */
+  /*border-radius: 0 0 10px 10px;*/border-radius:10px; /* 边框圆角设置，下左和下右为10像素 */
+  box-sizing: border-box; /* 盒模型设置为边框盒模型 */
+}
+.news-btn-more a,
+.twitter-btn-more a,
+.link-btn-1st_site a,
+.link-btn-radio a {
+  color: inherit; /* 文字颜色继承父元素 */
+  font-size: 18px; /* 字体大小设置为18像素 */
+  line-height: 1; /* 行高设置为1 */
+  letter-spacing: 1px; /* 字母间距设置为1像素 */
+  -webkit-font-smoothing: antialiased; /* 使用抗锯齿字体平滑处理 */
+  text-align: center; /* 文本居中对齐 */
+  display: block; /* 显示为块级元素 */
+  width: 100%; /* 宽度设置为100% */
+  padding: 26px 0; /* 上下内边距为26像素，左右为0 */
+  -webkit-transition: 0.3s; /* 过渡效果设置为0.3秒 */
+          transition: 0.3s; /* 过渡效果设置为0.3秒 */
+  opacity: 1; /* 不透明度设置为1 */
+  filter: alpha(opacity=100); /* 对于旧版IE的不透明度设置为100 */
+}
+.news-btn-more a:hover,
+.twitter-btn-more a:hover,
+.link-btn-1st_site a:hover,
+.link-btn-radio a:hover {
+  -webkit-transition: 0.3s; /* 过渡效果设置为0.3秒 */
+          transition: 0.3s; /* 过渡效果设置为0.3秒 */
+  opacity: 0.5; /* 不透明度设置为0.5 */
+  filter: alpha(opacity=50); /* 对于旧版IE的不透明度设置为50 */
+}
+
+/* 新闻和Twitter的外部链接按钮样式 */
+.news-btn-more,
+.twitter-btn-more {
+  border-color: #b0c1cd; /* 边框颜色设置为灰色 */
+  /*border-top: 0px none;*/ /* 顶部边框设置为无 */
+}
+
+/* 第一站点和广播的外部链接按钮样式 */
+.link-btn-1st_site,
+.link-btn-radio {
+  border-radius: 10px; /* 边框圆角设置为10像素 */
+  margin: 20px 0 0; /* 上边距为20像素，左右和下边距为0 */
+}
+
+/* 广播的外部链接按钮样式 */
+.link-btn-radio {
+  color: #ffa200; /* 文字颜色设置为橙色 */
+  border-color: #ffa200; /* 边框颜色设置为橙色 */
+}
+
+/* 第一站点的外部链接按钮样式 */
+.link-btn-1st_site {
+  color: #ff4eaa; /* 文字颜色设置为粉红色 */
+  border-color: #ff4eaa; /* 边框颜色设置为粉红色 */
+}
+
+/* ============================================== */
+/* 页脚样式 */
+/* ============================================== */
+/* ...省略页脚样式... */
+.l-footer {
+  position: relative;
+  z-index: 2;
+  padding: 100px 0 110px;
+}
+
+.footer-copy,
+.footer-copy-text {
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  line-height: 20px;
+}
+
+.footer-menu {
+  font-size: 0;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  padding: 50px 0 0;
+}
+.footer-menu li {
+  font-size: 12px;
+  display: inline-block;
+  margin: 0 50px 0 0;
+}
+.footer-menu li:last-child {
+  margin-right: 0;
+}
+
+/* ==============================================
+ * NEWS IFRAME
+ *
+ * memo:
+ *
+ * ============================================== */
+.l-news-frame {
+  color: #454d54;
+  -webkit-font-smoothing: antialiased;
+  width: 480px;
+  padding: 20px 0 20px 20px;
+  box-sizing: border-box;
+}
+.l-news-frame .section {
+  width: calc(100% - 20px);
+  margin-bottom: 30px;
+}
+.l-news-frame .date {
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 1.5px;
+}
+.l-news-frame h3 {
+  font-size: 17px;
+  font-weight: normal;
+  line-height: 24px;
+  margin: 6px 0;
+}
+.l-news-frame img {
+  max-width: 100%;
+  height: auto;
+}
+.l-news-frame .news-txt {
+  width: 100%;
+  height: 200px;
+}
+
+/* ==============================================
+ * 英梨々 テキスト */
+.intro-box-pos-eriri {
+  position: absolute;
+  top: 100px;
+  width: 100%;
+  height: 100%;
+}
+
+#intro-box-eriri .intro-box-name {
+  background: none !important;
+}
+#intro-box-eriri .intro-box-name span {
+  background: url("../images/teaser/intro_eriri_name.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  width: 178px;
+  height: 477px;
+}
+#intro-box-eriri .intro-box-text {
+  background: none !important;
+}
+#intro-box-eriri .intro-box-text span {
+  background: url("../images/teaser/intro_eriri_text.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 35px;
+  height: 35px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+#intro-box-eriri .intro-box-text .t1,
+#intro-box-eriri .intro-box-text .t2,
+#intro-box-eriri .intro-box-text .t3,
+#intro-box-eriri .intro-box-text .t4 {
+  left: 148px;
+}
+#intro-box-eriri .intro-box-text .t1 {
+  background-position: -149px -1px;
+  top: 0;
+}
+#intro-box-eriri .intro-box-text .t2 {
+  background-position: -149px -46px;
+  top: 45px;
+}
+#intro-box-eriri .intro-box-text .t3 {
+  background-position: -149px -88px;
+  top: 87px;
+}
+#intro-box-eriri .intro-box-text .t4 {
+  background-position: -149px -123px;
+  top: 122px;
+}
+#intro-box-eriri .intro-box-text .t5,
+#intro-box-eriri .intro-box-text .t6,
+#intro-box-eriri .intro-box-text .t7,
+#intro-box-eriri .intro-box-text .t8,
+#intro-box-eriri .intro-box-text .t9,
+#intro-box-eriri .intro-box-text .t10,
+#intro-box-eriri .intro-box-text .t11,
+#intro-box-eriri .intro-box-text .t12,
+#intro-box-eriri .intro-box-text .t13,
+#intro-box-eriri .intro-box-text .t14,
+#intro-box-eriri .intro-box-text .t15 {
+  left: 73px;
+}
+#intro-box-eriri .intro-box-text .t5 {
+  background-position: -74px -1px;
+  top: 0;
+}
+#intro-box-eriri .intro-box-text .t6 {
+  background-position: -74px -45px;
+  top: 44px;
+}
+#intro-box-eriri .intro-box-text .t7 {
+  background-position: -74px -88px;
+  top: 87px;
+}
+#intro-box-eriri .intro-box-text .t8 {
+  background-position: -74px -128px;
+  top: 127px;
+}
+#intro-box-eriri .intro-box-text .t9 {
+  background-position: -74px -178px;
+  top: 177px;
+}
+#intro-box-eriri .intro-box-text .t10 {
+  background-position: -74px -223px;
+  top: 222px;
+}
+#intro-box-eriri .intro-box-text .t11 {
+  background-position: -74px -267px;
+  top: 266px;
+}
+#intro-box-eriri .intro-box-text .t12 {
+  background-position: -74px -313px;
+  top: 312px;
+}
+#intro-box-eriri .intro-box-text .t13 {
+  background-position: -74px -358px;
+  top: 357px;
+}
+#intro-box-eriri .intro-box-text .t14 {
+  background-position: -74px -401px;
+  top: 400px;
+}
+#intro-box-eriri .intro-box-text .t15 {
+  background-position: -74px -448px;
+  top: 447px;
+}
+#intro-box-eriri .intro-box-text .t16,
+#intro-box-eriri .intro-box-text .t17,
+#intro-box-eriri .intro-box-text .t18,
+#intro-box-eriri .intro-box-text .t19,
+#intro-box-eriri .intro-box-text .t20 {
+  left: -2px;
+}
+#intro-box-eriri .intro-box-text .t16 {
+  background-position: 1px -1px;
+  top: 0px;
+}
+#intro-box-eriri .intro-box-text .t17 {
+  background-position: 1px -48px;
+  top: 47px;
+}
+#intro-box-eriri .intro-box-text .t18 {
+  background-position: 1px -88px;
+  top: 87px;
+}
+#intro-box-eriri .intro-box-text .t19 {
+  background-position: 1px -133px;
+  top: 132px;
+}
+#intro-box-eriri .intro-box-text .t20 {
+  background-position: 1px -179px;
+  top: 178px;
+}
+
+/* ==============================================
+ * 詩羽 テキスト */
+.intro-box-pos-utaha {
+  position: absolute;
+  left: 300px;
+  top: 200px;
+  width: 100%;
+  height: 100%;
+}
+
+#intro-box-utaha .intro-box-name {
+  background: none !important;
+}
+#intro-box-utaha .intro-box-name span {
+  background: url("../images/teaser/intro_utaha_name.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  width: 184px;
+  height: 10px;
+}
+#intro-box-utaha .intro-box-text {
+  background: none !important;
+}
+#intro-box-utaha .intro-box-text span {
+  background: url("../images/teaser/intro_utaha_text.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 35px;
+  height: 38px;
+}
+#intro-box-utaha .intro-box-text .t1,
+#intro-box-utaha .intro-box-text .t2,
+#intro-box-utaha .intro-box-text .t3,
+#intro-box-utaha .intro-box-text .t4,
+#intro-box-utaha .intro-box-text .t5,
+#intro-box-utaha .intro-box-text .t6,
+#intro-box-utaha .intro-box-text .t7,
+#intro-box-utaha .intro-box-text .t8,
+#intro-box-utaha .intro-box-text .t9,
+#intro-box-utaha .intro-box-text .t10,
+#intro-box-utaha .intro-box-text .t11 {
+  top: -2px;
+}
+#intro-box-utaha .intro-box-text .t1 {
+  background-position: -1px 1px;
+  left: 0;
+}
+#intro-box-utaha .intro-box-text .t2 {
+  background-position: -47px 1px;
+  left: 46px;
+}
+#intro-box-utaha .intro-box-text .t3 {
+  background-position: -90px 1px;
+  left: 89px;
+}
+#intro-box-utaha .intro-box-text .t4 {
+  background-position: -133px 1px;
+  left: 132px;
+}
+#intro-box-utaha .intro-box-text .t5 {
+  background-position: -178px 1px;
+  left: 177px;
+}
+#intro-box-utaha .intro-box-text .t6 {
+  background-position: -223px 1px;
+  left: 222px;
+}
+#intro-box-utaha .intro-box-text .t7 {
+  background-position: -268px 1px;
+  left: 267px;
+}
+#intro-box-utaha .intro-box-text .t8 {
+  background-position: -314px 1px;
+  left: 313px;
+}
+#intro-box-utaha .intro-box-text .t9 {
+  background-position: -358px 1px;
+  left: 357px;
+}
+#intro-box-utaha .intro-box-text .t10 {
+  background-position: -403px 1px;
+  left: 402px;
+}
+#intro-box-utaha .intro-box-text .t11 {
+  background-position: -438px 1px;
+  left: 437px;
+}
+#intro-box-utaha .intro-box-text .t12,
+#intro-box-utaha .intro-box-text .t13,
+#intro-box-utaha .intro-box-text .t14,
+#intro-box-utaha .intro-box-text .t15,
+#intro-box-utaha .intro-box-text .t16,
+#intro-box-utaha .intro-box-text .t17,
+#intro-box-utaha .intro-box-text .t18 {
+  top: 58px;
+}
+#intro-box-utaha .intro-box-text .t12 {
+  background-position: -1px -59px;
+  left: 0;
+}
+#intro-box-utaha .intro-box-text .t13 {
+  background-position: -45px -59px;
+  left: 44px;
+}
+#intro-box-utaha .intro-box-text .t14 {
+  background-position: -90px -59px;
+  left: 89px;
+}
+#intro-box-utaha .intro-box-text .t15 {
+  background-position: -133px -59px;
+  left: 132px;
+}
+#intro-box-utaha .intro-box-text .t16 {
+  background-position: -178px -59px;
+  left: 177px;
+}
+#intro-box-utaha .intro-box-text .t17 {
+  background-position: -223px -59px;
+  left: 222px;
+}
+#intro-box-utaha .intro-box-text .t18 {
+  background-position: -268px -59px;
+  left: 267px;
+}
+#intro-box-utaha .intro-box-text .t19,
+#intro-box-utaha .intro-box-text .t20,
+#intro-box-utaha .intro-box-text .t21,
+#intro-box-utaha .intro-box-text .t22,
+#intro-box-utaha .intro-box-text .t23,
+#intro-box-utaha .intro-box-text .t24,
+#intro-box-utaha .intro-box-text .t25 {
+  top: 118px;
+}
+#intro-box-utaha .intro-box-text .t19 {
+  background-position: -1px -119px;
+  left: 0;
+}
+#intro-box-utaha .intro-box-text .t20 {
+  background-position: -45px -119px;
+  left: 44px;
+}
+#intro-box-utaha .intro-box-text .t21 {
+  background-position: -90px -119px;
+  left: 89px;
+}
+#intro-box-utaha .intro-box-text .t22 {
+  background-position: -135px -119px;
+  left: 134px;
+}
+#intro-box-utaha .intro-box-text .t23 {
+  background-position: -178px -119px;
+  left: 177px;
+}
+#intro-box-utaha .intro-box-text .t24 {
+  background-position: -223px -119px;
+  left: 222px;
+}
+#intro-box-utaha .intro-box-text .t25 {
+  background-position: -268px -119px;
+  left: 267px;
+}
+
+/* ==============================================
+ * 出海 テキスト */
+.intro-box-pos-izumi {
+  position: absolute;
+  left: 500px;
+  top: -100px;
+  width: 100%;
+  height: 100%;
+}
+
+#intro-box-izumi .intro-box-name {
+  background: none !important;
+}
+#intro-box-izumi .intro-box-name span {
+  background: url("../images/teaser/intro_izumi_name.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  width: 184px;
+  height: 10px;
+}
+#intro-box-izumi .intro-box-text {
+  background: none !important;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+#intro-box-izumi .intro-box-text span {
+  background: url("../images/teaser/intro_izumi_text.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 35px;
+  height: 38px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+#intro-box-izumi .intro-box-text .t1,
+#intro-box-izumi .intro-box-text .t2,
+#intro-box-izumi .intro-box-text .t3,
+#intro-box-izumi .intro-box-text .t4,
+#intro-box-izumi .intro-box-text .t5,
+#intro-box-izumi .intro-box-text .t6,
+#intro-box-izumi .intro-box-text .t7,
+#intro-box-izumi .intro-box-text .t8,
+#intro-box-izumi .intro-box-text .t9,
+#intro-box-izumi .intro-box-text .t10,
+#intro-box-izumi .intro-box-text .t11,
+#intro-box-izumi .intro-box-text .t12,
+#intro-box-izumi .intro-box-text .t13 {
+  top: -2px;
+}
+#intro-box-izumi .intro-box-text .t1 {
+  background-position: 3px 1px;
+  left: -4px;
+}
+#intro-box-izumi .intro-box-text .t2 {
+  background-position: -43px 1px;
+  left: 42px;
+}
+#intro-box-izumi .intro-box-text .t3 {
+  background-position: -88px 1px;
+  left: 87px;
+}
+#intro-box-izumi .intro-box-text .t4 {
+  background-position: -126px 1px;
+  left: 125px;
+}
+#intro-box-izumi .intro-box-text .t5 {
+  background-position: -174px 1px;
+  left: 173px;
+}
+#intro-box-izumi .intro-box-text .t6 {
+  background-position: -221px 1px;
+  left: 220px;
+}
+#intro-box-izumi .intro-box-text .t7 {
+  background-position: -264px 1px;
+  left: 263px;
+}
+#intro-box-izumi .intro-box-text .t8 {
+  background-position: -310px 1px;
+  left: 309px;
+}
+#intro-box-izumi .intro-box-text .t9 {
+  background-position: -354px 1px;
+  left: 353px;
+}
+#intro-box-izumi .intro-box-text .t10 {
+  background-position: -400px 1px;
+  left: 399px;
+}
+#intro-box-izumi .intro-box-text .t11 {
+  background-position: -443px 1px;
+  left: 442px;
+}
+#intro-box-izumi .intro-box-text .t12 {
+  background-position: -488px 1px;
+  left: 487px;
+}
+#intro-box-izumi .intro-box-text .t13 {
+  background-position: -524px 1px;
+  left: 523px;
+}
+#intro-box-izumi .intro-box-text .t14,
+#intro-box-izumi .intro-box-text .t15,
+#intro-box-izumi .intro-box-text .t16,
+#intro-box-izumi .intro-box-text .t17 {
+  top: 58px;
+}
+#intro-box-izumi .intro-box-text .t14 {
+  background-position: 3px -59px;
+  left: -4px;
+}
+#intro-box-izumi .intro-box-text .t15 {
+  background-position: -42px -59px;
+  left: 41px;
+}
+#intro-box-izumi .intro-box-text .t16 {
+  background-position: -86px -59px;
+  left: 85px;
+}
+#intro-box-izumi .intro-box-text .t17 {
+  background-position: -131px -59px;
+  left: 130px;
+}
+
+/* ==============================================
+ * 美智留 テキスト */
+.intro-box-pos-michiru {
+  position: absolute;
+  left: 700px;
+  top: -550px;
+  width: 100%;
+  height: 100%;
+}
+
+#intro-box-michiru .intro-box-name {
+  background: none !important;
+}
+#intro-box-michiru .intro-box-name span {
+  background: url("../images/teaser/intro_michiru_name.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  width: 178px;
+  height: 477px;
+}
+#intro-box-michiru .intro-box-text {
+  background: none !important;
+}
+#intro-box-michiru .intro-box-text span {
+  background: url("../images/teaser/intro_michiru_text.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 38px;
+  height: 40px;
+}
+#intro-box-michiru .intro-box-text .t1,
+#intro-box-michiru .intro-box-text .t2,
+#intro-box-michiru .intro-box-text .t3,
+#intro-box-michiru .intro-box-text .t4,
+#intro-box-michiru .intro-box-text .t5,
+#intro-box-michiru .intro-box-text .t6,
+#intro-box-michiru .intro-box-text .t7 {
+  left: 123px;
+}
+#intro-box-michiru .intro-box-text .t1 {
+  background-position: -124px -1px;
+  top: 0;
+}
+#intro-box-michiru .intro-box-text .t2 {
+  background-position: -124px -46px;
+  top: 45px;
+}
+#intro-box-michiru .intro-box-text .t3 {
+  background-position: -124px -88px;
+  top: 87px;
+}
+#intro-box-michiru .intro-box-text .t4 {
+  background-position: -124px -133px;
+  top: 132px;
+}
+#intro-box-michiru .intro-box-text .t5 {
+  background-position: -124px -179px;
+  top: 178px;
+}
+#intro-box-michiru .intro-box-text .t6 {
+  background-position: -124px -223px;
+  top: 222px;
+}
+#intro-box-michiru .intro-box-text .t7 {
+  background-position: -124px -261px;
+  top: 260px;
+}
+#intro-box-michiru .intro-box-text .t8,
+#intro-box-michiru .intro-box-text .t9,
+#intro-box-michiru .intro-box-text .t10,
+#intro-box-michiru .intro-box-text .t11,
+#intro-box-michiru .intro-box-text .t12,
+#intro-box-michiru .intro-box-text .t13,
+#intro-box-michiru .intro-box-text .t14,
+#intro-box-michiru .intro-box-text .t15 {
+  left: 63px;
+}
+#intro-box-michiru .intro-box-text .t8 {
+  background-position: -64px -1px;
+  top: 0px;
+}
+#intro-box-michiru .intro-box-text .t9 {
+  background-position: -64px -43px;
+  top: 42px;
+}
+#intro-box-michiru .intro-box-text .t10 {
+  background-position: -64px -88px;
+  top: 87px;
+}
+#intro-box-michiru .intro-box-text .t11 {
+  background-position: -64px -133px;
+  top: 132px;
+}
+#intro-box-michiru .intro-box-text .t12 {
+  background-position: -64px -176px;
+  top: 175px;
+}
+#intro-box-michiru .intro-box-text .t13 {
+  background-position: -64px -221px;
+  top: 220px;
+}
+#intro-box-michiru .intro-box-text .t14 {
+  background-position: -64px -266px;
+  top: 265px;
+}
+#intro-box-michiru .intro-box-text .t15 {
+  background-position: -64px -311px;
+  top: 310px;
+}
+#intro-box-michiru .intro-box-text .t16,
+#intro-box-michiru .intro-box-text .t17,
+#intro-box-michiru .intro-box-text .t18,
+#intro-box-michiru .intro-box-text .t19,
+#intro-box-michiru .intro-box-text .t20,
+#intro-box-michiru .intro-box-text .t21,
+#intro-box-michiru .intro-box-text .t22,
+#intro-box-michiru .intro-box-text .t23,
+#intro-box-michiru .intro-box-text .t24 {
+  left: -1px;
+}
+#intro-box-michiru .intro-box-text .t16 {
+  background-position: 0 1px;
+  top: -2px;
+}
+#intro-box-michiru .intro-box-text .t17 {
+  background-position: 0 -44px;
+  top: 43px;
+}
+#intro-box-michiru .intro-box-text .t18 {
+  background-position: 0 -88px;
+  top: 87px;
+}
+#intro-box-michiru .intro-box-text .t19 {
+  background-position: 0 -133px;
+  top: 132px;
+}
+#intro-box-michiru .intro-box-text .t20 {
+  background-position: 0 -179px;
+  top: 178px;
+}
+#intro-box-michiru .intro-box-text .t21 {
+  background-position: 0 -219px;
+  top: 218px;
+}
+#intro-box-michiru .intro-box-text .t22 {
+  background-position: 0 -265px;
+  top: 264px;
+}
+#intro-box-michiru .intro-box-text .t23 {
+  background-position: 0 -310px;
+  top: 309px;
+}
+#intro-box-michiru .intro-box-text .t24 {
+  background-position: 0 -349px;
+  top: 348px;
+}
+
+/* ==============================================
+ * 恵 テキスト */
+.first-text-wrap {
+  pointer-events: none;
+  width: 1200px;
+  height: 800px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 100;
+}
+
+.first-text {
+  background: none !important;
+  background: url("../images/teaser/intro_megumi_text.png") no-repeat 0 0;
+  width: 267px;
+  height: 297px;
+  position: absolute;
+  left: 721px;
+  top: 215px;
+}
+.first-text span {
+  background: url("../images/teaser/intro_megumi_text.png") no-repeat 0 0;
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 35px;
+  height: 35px;
+}
+.first-text .t1,
+.first-text .t2,
+.first-text .t3,
+.first-text .t4,
+.first-text .t5,
+.first-text .t6,
+.first-text .t7,
+.first-text .t8 {
+  left: 237px;
+}
+.first-text .t1 {
+  background-position: -238px -1px;
+  top: 0;
+}
+.first-text .t2 {
+  background-position: -238px -37px;
+  top: 36px;
+}
+.first-text .t3 {
+  background-position: -238px -68px;
+  top: 67px;
+}
+.first-text .t4 {
+  background-position: -238px -109px;
+  top: 108px;
+}
+.first-text .t5 {
+  background-position: -238px -143px;
+  top: 142px;
+}
+.first-text .t6 {
+  background-position: -238px -177px;
+  top: 176px;
+}
+.first-text .t7 {
+  background-position: -238px -217px;
+  top: 216px;
+}
+.first-text .t8 {
+  background-position: -238px -251px;
+  top: 250px;
+}
+.first-text .t9,
+.first-text .t10,
+.first-text .t11 {
+  left: 175px;
+}
+.first-text .t9 {
+  background-position: -176px 0px;
+  top: -1px;
+}
+.first-text .t10 {
+  background-position: -176px -35px;
+  top: 34px;
+}
+.first-text .t11 {
+  background-position: -176px -69px;
+  top: 68px;
+}
+.first-text .t12,
+.first-text .t13,
+.first-text .t14,
+.first-text .t15,
+.first-text .t16,
+.first-text .t17,
+.first-text .t18 {
+  left: 116px;
+}
+.first-text .t12 {
+  background-position: -117px -1px;
+  top: 0px;
+}
+.first-text .t13 {
+  background-position: -117px -35px;
+  top: 34px;
+}
+.first-text .t14 {
+  background-position: -117px -70px;
+  top: 69px;
+}
+.first-text .t15 {
+  background-position: -117px -107px;
+  top: 106px;
+}
+.first-text .t16 {
+  background-position: -117px -143px;
+  top: 142px;
+}
+.first-text .t17 {
+  background-position: -117px -177px;
+  top: 176px;
+}
+.first-text .t18 {
+  background-position: -117px -211px;
+  top: 210px;
+}
+.first-text .t19,
+.first-text .t20,
+.first-text .t21,
+.first-text .t22,
+.first-text .t23,
+.first-text .t24,
+.first-text .t25,
+.first-text .t26,
+.first-text .t27 {
+  left: 55px;
+}
+.first-text .t19 {
+  background-position: -56px -1px;
+  top: 0px;
+}
+.first-text .t20 {
+  background-position: -56px -35px;
+  top: 34px;
+}
+.first-text .t21 {
+  background-position: -56px -69px;
+  top: 68px;
+}
+.first-text .t22 {
+  background-position: -56px -106px;
+  top: 106px;
+}
+.first-text .t23 {
+  background-position: -56px -141px;
+  top: 140px;
+}
+.first-text .t24 {
+  background-position: -56px -181px;
+  top: 180px;
+}
+.first-text .t25 {
+  background-position: -56px -211px;
+  top: 210px;
+}
+.first-text .t26 {
+  background-position: -56px -251px;
+  top: 250px;
+}
+.first-text .t27 {
+  background-position: -56px -287px;
+  top: 286px;
+}
+.first-text .t28,
+.first-text .t29,
+.first-text .t30,
+.first-text .t31 {
+  left: -5px;
+}
+.first-text .t28 {
+  background-position: 4px -1px;
+  top: 0px;
+}
+.first-text .t29 {
+  background-position: 4px -36px;
+  top: 35px;
+}
+.first-text .t30 {
+  background-position: 4px -71px;
+  top: 70px;
+}
+.first-text .t31 {
+  background-position: 4px -106px;
+  top: 105px;
+}
+
+/* ==============================================
+ * COMMON SETTINGS
+ *
+ * memo:
+ *
+ * ============================================== */
+@media screen and (max-width: 800px) {
+  .l-social a,
+  .intro-btn-skip a,
+  .footer-menu a,
+  .l-news-wrap a,
+  .movie-btn a,
+  .first-btn-1st a {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transition: none;
+            transition: none;
+  }
+  .l-social a:hover,
+  .intro-btn-skip a:hover,
+  .footer-menu a:hover,
+  .l-news-wrap a:hover,
+  .movie-btn a:hover,
+  .first-btn-1st a:hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transition: none;
+            transition: none;
+  }
+
+  .pcv {
+    display: none;
+  }
+
+  .spv {
+    display: block;
+  }
+
+  img.pcv {
+    display: none;
+  }
+
+  img.spv {
+    display: inline;
+  }
+
+  .l-stage {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* ==============================================
+   * INTRO
+   *
+   * memo:
+   *
+   * ============================================== */
+  .l-intro {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    position: absolute;
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .intro-btn-skip {
+    top: 18px;
+    top: 5.625vw;
+    right: 20px;
+    right: 6.25vw;
+  }
+  .intro-btn-skip a {
+    color: #454d54;
+    font-size: 13px;
+    font-size: 4.0625vw;
+    -webkit-font-smoothing: antialiased;
+    font-style: italic;
+    background: url("../images/teaser/intro_ico_skip_sp.png") no-repeat right 3px;
+    background-position: right 0.78125vw;
+    background-size: 8px auto;
+    background-size: 2.5vw auto;
+    padding: 0 9px 0 0;
+    padding: 0 4.6875vw 0 0;
+  }
+
+  .Android .intro-btn-skip a {
+    padding: 0 18px 0 0;
+    padding: 0 4.6875vw 0 0;
+  }
+
+  .l-intro-inner {
+    position: absolute;
+    width: 10000px;
+    height: 10000px;
+  }
+
+  .intro-box-vsl-sp,
+  .intro-box-text-sp {
+    display: block;
+    line-height: 0;
+  }
+
+  .intro-box-text-group,
+  .intro-box-name,
+  .intro-box-movie {
+    display: none;
+  }
+
+  .intro-box,
+  .intro-box-text,
+  .intro-box-name,
+  .intro-box-movie,
+  .intro-box-movie .movie-mask,
+  #intro-box-megumi {
+    position: absolute;
+    z-index: 0;
+  }
+
+  .intro-box {
+    display: block;
+    width: 100%;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  .intro-box .intro-box-vsl-sp img,
+  .intro-box .intro-box-text-sp img {
+    width: 100%;
+    height: auto;
+  }
+
+  .intro-box-movie,
+  .intro-box-text,
+  .intro-box-name {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+
+  .intro-box-pos {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #intro-box-eriri .intro-box-text-sp {
+    padding: 26px 0 0;
+    padding: 8.28125vw 0 0;
+  }
+  #intro-box-eriri .intro-box-vsl-sp {
+    padding: 50px 0 0;
+    padding: 16.09375vw 0 0;
+  }
+
+  #intro-box-utaha .intro-box-text-sp {
+    padding: 64px 0 0;
+    padding: 20vw 0 0;
+  }
+  #intro-box-utaha .intro-box-vsl-sp {
+    padding: 39px 0 0;
+    padding: 12.1875vw 0 0;
+  }
+
+  #intro-box-izumi .intro-box-text-sp {
+    padding: 43px 0 0;
+    padding: 13.4375vw 0 0;
+  }
+  #intro-box-izumi .intro-box-vsl-sp {
+    padding: 59px 0 0;
+    padding: 18.28125vw 0 0;
+  }
+
+  #intro-box-michiru .intro-box-text-sp {
+    padding: 68px 0 0;
+    padding: 21.09375vw 0 0;
+  }
+  #intro-box-michiru .intro-box-vsl-sp {
+    padding: 35px 0 0;
+    padding: 10.9375vw 0 0;
+  }
+
+  /* --------------------
+   * テキスト
+   * ------------------- */
+  .intro-box-text {
+    z-index: 1;
+  }
+
+  /* --------------------
+   * ネーム
+   * ------------------- */
+  .intro-box-name {
+    z-index: 1;
+  }
+
+  /* --------------------
+   * ムービー
+   * ------------------- */
+  .intro-box-movie {
+    width: 759px;
+    height: 427px;
+    z-index: 0;
+  }
+  .intro-box-movie:before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100px;
+    background: #fff;
+    position: absolute;
+    top: -100px;
+    z-index: 100;
+  }
+  .intro-box-movie:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 50px;
+    background: #fff;
+    position: absolute;
+    bottom: -50px;
+    z-index: 100;
+  }
+  .intro-box-movie video {
+    margin-top: -40px;
+  }
+  .intro-box-movie .movie-mask {
+    background: url("../images/teaser/intro_mask.png") no-repeat 0 0;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+  }
+  .intro-box-movie .movie-mask:before {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100px;
+    background: #fff;
+    position: absolute;
+    left: -100px;
+    z-index: 100;
+  }
+  .intro-box-movie .movie-mask:after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 50px;
+    background: #fff;
+    position: absolute;
+    right: -50px;
+    z-index: 100;
+  }
+
+  /* ==============================================
+   * MAIN first
+   *
+   * memo:
+   *
+   * ============================================== */
+  .l-first {
+    position: relative;
+    height: 523px;
+    height: 163.4375vw;
+  }
+
+  .first-logo {
+    position: absolute;
+    left: auto;
+    right: 4px;
+    right: 1.25vw;
+    bottom: auto;
+    top: 2px;
+    top: 0.46875vw;
+    width: 128px;
+    width: 52.5vw;
+    max-width: 336px;
+    height: 86px;
+    height: 26.875vw;
+  }
+  .first-logo img {
+    width: 100%;
+    height: auto;
+  }
+
+  .first-date {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 101;
+    margin: auto;
+    line-height: 0;
+  }
+  .first-date img {
+    width: 100%;
+    height: auto;
+  }
+
+  .first-btn-1st {
+    width: 71px;
+    width: 22.1875vw;
+    height: 28px;
+    height: 8.75vw;
+    position: absolute;
+    left: 15px;
+    left: 4.6875vw;
+    top: 15px;
+    top: 4.6875vw;
+  }
+  .first-btn-1st img {
+    width: 100%;
+    height: auto;
+  }
+
+  .first-bg,
+  .first-megumi-back,
+  .first-megumi-front,
+  .first-flare01,
+  .first-flare02 {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .first-bg {
+    background: url("../images/teaser/main_bg_sp.jpg") no-repeat center;
+    background-size: 100% auto;
+  }
+
+  .first-megumi-back {
+    background: url("../images/teaser/main_megumi_back_sp.png") no-repeat center;
+    background-size: 100% auto;
+  }
+
+  .first-megumi-front {
+    background: url("../images/teaser/main_megumi_front_sp.png") no-repeat center;
+    background-size: 100% auto;
+  }
+
+  .first-flare01 {
+    background: url("../images/teaser/main_flare01_sp.png") repeat-x center;
+    background-size: 100% auto;
+    z-index: 10;
+  }
+
+  .first-flare02 {
+    background: url("../images/teaser/main_flare02_sp.png") repeat-x center;
+    background-size: 100% auto;
+    z-index: 10;
+  }
+
+  /* --------------------
+   * テキスト
+   * ------------------- */
+  .first-text-wrap {
+    width: 100%;
+    height: auto;
+  }
+
+  .first-text-main {
+    pointer-events: none;
+    background: none;
+    width: 195px;
+    width: 61.09375vw;
+    max-width: 391px;
+    height: auto;
+    position: absolute;
+    left: auto;
+    right: 0px;
+    top: 128px;
+    top: 40.15625vw;
+  }
+  .first-text-main img {
+    width: 100%;
+    height: auto;
+  }
+
+  .first-text {
+    background: url("../images/teaser/intro_megumi_text_sp.png") no-repeat 0 0 !important;
+    background-size: 100% auto !important;
+    pointer-events: none;
+    width: 195px;
+    width: 61.09375vw;
+    max-width: 391px;
+    height: 233px;
+    height: 72.8125vw;
+    position: absolute;
+    left: auto;
+    right: 0px;
+    top: 128px;
+    top: 40.15625vw;
+  }
+  .first-text span {
+    display: none;
+  }
+
+  /* --------------------
+   * さくら表示レイヤー
+   * ------------------- */
+  .sakura-front {
+    position: absolute;
+    background: url("../images/teaser/main_sakura_front_sp.png") no-repeat center;
+    background-size: 100% auto;
+    display: none;
+  }
+  .sakura-front .sakura-front-l,
+  .sakura-front .sakura-front-m,
+  .sakura-front .sakura-front-s {
+    display: none;
+  }
+
+  .sakura-back {
+    position: absolute;
+    background: url("../images/teaser/main_sakura_back_sp.png") no-repeat center 0;
+    background-size: 100% auto;
+    width: 100%;
+    height: 100%;
+  }
+  .sakura-back .sakura-back-l,
+  .sakura-back .sakura-back-m,
+  .sakura-back .sakura-back-s {
+    display: none;
+  }
+
+  /* ==============================================
+   * MAIN second
+   *
+   * memo:
+   *
+   * ============================================== */
+  /* --------------------
+   * ファーストビュー確保レイヤー
+   * ------------------- */
+  .l-fix {
+    display: none;
+  }
+
+  /* --------------------
+   * ムービー
+   * ------------------- */
+  .l-movie {
+    background: url("../images/teaser/main_movie_ss_sp.png") no-repeat center;
+    background-size: cover;
+    width: 100%;
+    height: 180px;
+    height: 56.25vw;
+    margin-top: -1px;
+    overflow: hidden;
+  }
+
+  .movie-btn {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .movie-btn-play,
+  .movie-btn-youtube {
+    position: absolute;
+    top: 27px;
+    top: 8.4375vw;
+  }
+
+  .movie-btn-play {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  .movie-btn-play a {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .movie-btn-play img {
+    width: 200px;
+    width: 62.65625vw;
+    max-width: 401px;
+    height: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  .movie-btn-youtube {
+    top: 192px;
+    top: 60.15625vw;
+  }
+  .movie-btn-youtube a {
+    font-size: 7px;
+    font-size: 2.34375vw;
+  }
+
+  #movie-player {
+    display: none;
+  }
+
+  /* --------------------
+   * レイアウト共通設定
+   * ------------------- */
+  .l-re_air,
+  .l-staff,
+  .l-news-wrap {
+    width: 100%;
+  }
+
+  /* --------------------
+   * 1期 再放送の紹介
+   * ------------------- */
+  .l-re_air {
+    padding: 35px 0 0;
+    padding: 10.9375vw 0 0;
+  }
+  .l-re_air img {
+    width: 100%;
+    height: auto;
+  }
+
+  .re_air-title {
+    width: 66px;
+    width: 23.75vw;
+    max-width: 152px;
+    margin: 0 auto 10px;
+    margin: 0 auto 3.125vw;
+  }
+
+  .re_air-desc {
+    margin: 0 auto;
+    width: 287px;
+    width: 89.6875vw;
+    max-width: 574px;
+  }
+
+  /* --------------------
+   * スタッフクレジット
+   * ------------------- */
+  .l-staff {
+    font-size: 0;
+    text-align: center;
+    padding: 50px 0 0;
+    padding: 15.625vw 0 0;
+    overflow: hidden;
+  }
+  .l-staff img {
+    width: 100%;
+    height: auto;
+  }
+
+  .staff-01 {
+    width: 103px;
+    width: 32.1875vw;
+    max-width: 206px;
+    margin: 0 38px 0 0;
+    margin: 0 5.9375vw 0 0;
+  }
+
+  .staff-02 {
+    width: 129px;
+    width: 40.3125vw;
+    max-width: 258px;
+  }
+
+  .staff-03 {
+    width: 289px;
+    width: 90.3125vw;
+    max-width: 578px;
+    margin: 25px auto 0;
+    margin: 7.8125vw auto 0;
+  }
+
+  .staff-04 {
+    width: 287px;
+    width: 89.6875vw;
+    max-width: 574px;
+    margin: 25px auto 0;
+    margin: 7.8125vw auto 0;
+  }
+
+  /* --------------------
+   * Official Twitter
+   * ------------------- */
+  .l-news-wrap {
+    padding: 50px 0 0;
+    padding: 15.625vw 0 0;
+    box-sizing: border-box;
+  }
+
+  .news-iframe-wrap {
+    background: #fff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #b0c1cd !important;
+    width: 100% !important;
+    height: 715px;
+    box-sizing: border-box;
+  }
+  .news-iframe-wrap iframe {
+    width: 100% !important;
+    height: 100%;
+    border: none !important;
+  }
+
+  .l-news,
+  .l-twitter {
+    float: none;
+    width: 250px;
+    width: 78.125vw;
+    margin: 0 auto;
+  }
+  .l-news iframe,
+  .l-twitter iframe {
+    margin-top: -1px !important;
+  }
+
+  .news-title,
+  .twitter-title {
+    text-align: center;
+    line-height: 0;
+    margin: 0 auto;
+    padding: 9px 0 8px;
+    padding: 2.8125vw 0 2.5vwpx;
+    border: 1px solid #b0c1cd;
+    border-bottom: 0px none;
+    border-radius: 4px 4px 0 0;
+    border-radius: 1.25vw 1.25vw 0 0;
+  }
+
+  .news-title img {
+    width: 33px;
+    width: 10.3125vw;
+    max-width: 66px;
+    height: auto;
+  }
+
+  .twitter-title,
+  .l-twitter .twitter-timeline {
+    display: none !important;
+  }
+
+  /* --------------------
+   * SHAREボタン
+   * ------------------- */
+  .l-social {
+    display: none !important;
+  }
+
+  .l-social-sp {
+    position: relative;
+    z-index: 1;
+    display: block;
+    font-size: 0;
+    line-height: 1;
+    text-align: center;
+    padding: 50px 0 0;
+    padding: 15.625vw 0 0;
+  }
+  .l-social-sp p {
+    font-size: 8px;
+    font-size: 2.34375vw;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    margin-bottom: 6.25vw;
+  }
+  .l-social-sp li {
+    display: inline-block;
+    width: 40px;
+    width: 12.5vw;
+    margin-right: 20px;
+    margin-right: 6.25vw;
+  }
+  .l-social-sp li:last-child {
+    margin-right: 0;
+  }
+  .l-social-sp li a {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .l-social-sp li img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* --------------------
+   * 外部リンクなど
+   * ------------------- */
+  .news-btn-more,
+  .twitter-btn-more,
+  .link-btn-1st_site,
+  .link-btn-radio {
+    width: 100%;
+    border: 1px solid;
+    border-radius: 0 0 5px 5px;
+    /*border-radius: 0 0 1.5625vw 1.5625vw;*/border-radius:10px;
+    box-sizing: border-box;
+  }
+  .news-btn-more a,
+  .twitter-btn-more a,
+  .link-btn-1st_site a,
+  .link-btn-radio a {
+    color: inherit;
+    font-size: 9px;
+    font-size: 2.8125vw;
+    line-height: 1;
+    letter-spacing: 0;
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    display: block;
+    width: 100%;
+    padding: 13px 0;
+    padding: 4.0625vw 0;
+    -webkit-transition: 0.3s;
+            transition: 0.3s;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  .news-btn-more a:hover,
+  .twitter-btn-more a:hover,
+  .link-btn-1st_site a:hover,
+  .link-btn-radio a:hover {
+    -webkit-transition: 0.3s;
+            transition: 0.3s;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+  }
+
+  .news-btn-more,
+  .twitter-btn-more {
+    border-color: #b0c1cd;
+    /*border-top: 0px none;*/
+  }
+
+  .twitter-btn-more {
+    color: #00c6ff;
+    border: 1px solid;
+    border-color: #00c6ff;
+    border-radius: 5px;
+    border-radius: 1.5625vw;
+    margin: 40px auto;
+    margin: 12.5vw auto;
+  }
+  .twitter-btn-more a {
+    /*padding: 23px 0;
+    padding: 7.1875vw 0;*/
+  }
+
+  .link-btn-1st_site,
+  .link-btn-radio {
+    border-radius: 5px;
+    border-radius: 1.5625vw;
+    margin: 10px 0 0;
+    margin: 3.125vw 0 0;
+  }
+
+  .link-btn-radio {
+    color: #ffa200;
+    border-color: #ffa200;
+  }
+
+  .link-btn-1st_site {
+    color: #ff4eaa;
+    border-color: #ff4eaa;
+  }
+
+  .l-twitter .link-btn-1st_site {
+    display: block;
+  }
+
+  /* ==============================================
+   * FOOTER
+   *
+   * memo:
+   *
+   * ============================================== */
+  .l-footer {
+    position: relative;
+    z-index: 2;
+    padding: 50px 0 80px;
+    padding: 15.625vw 0 25vw;
+  }
+
+  .footer-copy {
+    font-size: 7px;
+    font-size: 2.03125vw;
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 20px;
+    margin-bottom: 6.25vw;
+  }
+
+  .footer-copy-text {
+    font-size: 7px;
+    font-size: 2.03125vw;
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    line-height: 13px;
+    line-height: 4.0625vw;
+  }
+
+  .footer-menu {
+    padding: 20px 0 0;
+    padding: 6.25vw 0 0;
+  }
+  .footer-menu li {
+    font-size: 7px;
+    font-size: 2.03125vw;
+    display: inline-block;
+    margin: 0 20px 0 0;
+    margin: 0 6.25vw 0 0;
+  }
+  .footer-menu li:last-child {
+    margin-right: 0;
+  }
+}
+@media screen and (max-device-width: 800px) {
+  /* ==============================================
+   * NEWS IFRAME
+   *
+   * memo:
+   *
+   * ============================================== */
+  .l-news-frame {
+    width: 100%;
+  }
+}
+/*! fancyBox v2.1.5 fancyapps.com | fancyapps.com/fancybox/#license */
+.fancybox-wrap,
+.fancybox-skin,
+.fancybox-outer,
+.fancybox-inner,
+.fancybox-image,
+.fancybox-wrap iframe,
+.fancybox-wrap object,
+.fancybox-nav,
+.fancybox-nav span,
+.fancybox-tmp {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  vertical-align: top;
+}
+
+.fancybox-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 8020;
+  margin-top: -40px;
+}
+
+.fancybox-skin {
+  position: relative;
+  background: #f9f9f9;
+  color: #444;
+  text-shadow: none;
+  border-radius: 0px;
+}
+
+.fancybox-opened {
+  z-index: 8030;
+}
+
+.fancybox-opened .fancybox-skin {
+  /*-webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) */
+  /*-moz-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) */
+  /*box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) */
+}
+
+.fancybox-outer, .fancybox-inner {
+  position: relative;
+}
+
+.fancybox-inner {
+  /*overflow: hidden */
+}
+
+.fancybox-type-iframe .fancybox-inner {
+  /*-webkit-overflow-scrolling: touch */
+}
+
+.fancybox-error {
+  color: #444;
+  font: 14px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 15px;
+  white-space: nowrap;
+}
+
+.fancybox-image, .fancybox-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.fancybox-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#fancybox-loading {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -22px;
+  margin-left: -22px;
+  background-position: 0 -108px;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+  cursor: pointer;
+  z-index: 8060;
+}
+
+#fancybox-loading div {
+  width: 44px;
+  height: 44px;
+  background: url("../images/common/fancybox/fancybox_loading.gif") center center no-repeat;
+}
+
+.fancybox-close {
+  background-image: url("../images/common/fancybox/fancybox_close.png");
+  position: absolute;
+  bottom: -90px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 50px;
+  height: 68px;
+  cursor: pointer;
+  z-index: 8040;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  -webkit-transition: 0.3s;
+          transition: 0.3s;
+}
+.fancybox-close:hover {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -webkit-transition: 0.3s;
+          transition: 0.3s;
+}
+
+@media screen and (max-width: 800px) {
+  .fancybox-close {
+    background-image: url("../images/common/fancybox/fancybox_close.png");
+    background-size: 100% auto;
+    width: 25px;
+    height: 34px;
+    bottom: -45px;
+  }
+
+  .fancybox-wrap {
+    margin-top: 0px;
+  }
+}
+.fancybox-nav {
+  position: absolute;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  background: transparent url("../images/common/fancybox/blank.gif");
+  -webkit-tap-highlight-color: transparent;
+  z-index: 8040;
+}
+
+.fancybox-prev {
+  left: 0;
+}
+
+.fancybox-next {
+  right: 0;
+}
+
+.fancybox-nav span {
+  position: absolute;
+  top: 50%;
+  width: 36px;
+  height: 34px;
+  margin-top: -18px;
+  cursor: pointer;
+  z-index: 8040;
+  visibility: hidden;
+}
+
+.fancybox-prev span {
+  left: 10px;
+  background-position: 0 -36px;
+}
+
+.fancybox-next span {
+  right: 10px;
+  background-position: 0 -72px;
+}
+
+.fancybox-nav:hover span {
+  visibility: visible;
+}
+
+.fancybox-tmp {
+  position: absolute;
+  top: -99999px;
+  left: -99999px;
+  visibility: hidden;
+  max-width: 99999px;
+  max-height: 99999px;
+  /*overflow: visible !important */
+}
+
+/* Overlay helper */
+.fancybox-lock {
+  /*overflow: hidden !important */
+  width: auto;
+}
+
+.fancybox-lock body {
+  /*overflow: hidden !important */
+}
+
+.fancybox-lock-test {
+  /*overflow-y: hidden !important */
+}
+
+.fancybox-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /*overflow: hidden */
+  display: none;
+  z-index: 8010;
+  background: url("../images/common/fancybox/fancybox_overlay.png");
+}
+
+.fancybox-overlay-fixed {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.fancybox-lock .fancybox-overlay {
+  /*overflow: auto */
+  /*overflow-y: scroll */
+}
+
+/* Title helper */
+.fancybox-title {
+  visibility: hidden;
+  font: normal 13px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  position: relative;
+  text-shadow: none;
+  z-index: 8050;
+}
+
+.fancybox-opened .fancybox-title {
+  visibility: visible;
+}
+
+.fancybox-title-float-wrap {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  margin-bottom: -35px;
+  z-index: 8050;
+  text-align: center;
+}
+
+.fancybox-title-float-wrap .child {
+  display: inline-block;
+  margin-right: -100%;
+  padding: 2px 20px;
+  background: transparent;
+  background: rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px #222;
+  color: #FFF;
+  font-weight: bold;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.fancybox-title-outside-wrap {
+  position: relative;
+  margin-top: 10px;
+  color: #fff;
+}
+
+.fancybox-title-inside-wrap {
+  padding-top: 10px;
+}
+
+.fancybox-title-over-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: #fff;
+  padding: 10px;
+  background: #000;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/*Retina graphics! */

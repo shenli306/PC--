@@ -1,0 +1,859 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load math_filters %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/dashboard.css">
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/index.css">
+<style>
+    /* 保持原有的数据可视化相关样式 */
+    .container {
+        padding: 20px;
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 80px 1fr 1fr;
+        gap: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+    }
+    
+    .header {
+        grid-column: 1 / 4;
+        text-align: center;
+        font-size: 32px;
+        line-height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        animation: pulse 3s ease-in-out infinite;
+    }
+
+    /* 图表容器样式 */
+    .chart {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        height: 100%;
+    }
+
+    /* 动画效果 */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes shine {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    /* 响应式布局调整 */
+    @media (max-width: 768px) {
+        .container {
+            grid-template-columns: 1fr;  /* 改为单列布局 */
+            grid-template-rows: auto auto auto auto auto auto auto;  /* 为每个图表设置单独的行 */
+            height: auto;
+            min-height: 100vh;
+            width: 100%;
+            padding: 10px;
+            gap: 15px;
+        }
+        
+        .header {
+            grid-column: 1;
+            font-size: 24px;
+            height: 60px;
+            line-height: 60px;
+        }
+        
+        .chart {
+            margin-bottom: 15px;
+            height: 400px;  /* 给每个图表一个固定高度 */
+            width: 100%;
+            padding: 15px;
+        }
+
+        /* 移除最后一个图表的底部边距 */
+        .chart:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    /* 添加横屏模式的特殊处理 */
+    @media (max-width: 768px) and (orientation: landscape) {
+        .container {
+            padding: 15px;
+        }
+        
+        .chart {
+            height: 300px;  /* 横屏时稍微降低图表高度 */
+        }
+    }
+</style>
+
+<div class="loading-container">
+    <div class="loading"></div>
+    <div class="loading-text">数据加载中...</div>
+</div>
+<div class="container">
+    <div class="header">硬件数据分析大屏</div>
+    <div class="chart" id="bar"></div>
+    <div class="chart" id="pie"></div>
+    <div class="chart" id="stackBar"></div>
+    <div class="chart" id="stackArea"></div>
+    <div class="chart" id="radar"></div>
+    <div class="chart" id="sunburst"></div>
+</div>
+
+<script src="/static/js/echarts.min.js"></script>
+<script>
+    // 初始化图表
+    const barChart = echarts.init(document.getElementById('bar'));
+    const pieChart = echarts.init(document.getElementById('pie'));
+    const stackBarChart = echarts.init(document.getElementById('stackBar'));
+    const stackAreaChart = echarts.init(document.getElementById('stackArea'));
+    const radarChart = echarts.init(document.getElementById('radar'));
+    const sunburstChart = echarts.init(document.getElementById('sunburst'));
+
+    // 响应式调整函数
+    function resizeCharts() {
+        const isMobile = window.innerWidth <= 768;
+        
+        // 基础图表配置调整
+        const baseChartConfig = {
+            grid: {
+                containLabel: true,
+                left: '10%',
+                right: isMobile ? '10%' : '15%',
+                top: '15%',
+                bottom: '15%'
+            },
+            title: {
+                textStyle: {
+                    fontSize: isMobile ? 16 : 16,
+                    color: '#fff'
+                },
+                top: 10
+            },
+            tooltip: {
+                textStyle: {
+                    fontSize: isMobile ? 14 : 14
+                }
+            }
+        };
+
+        // 更新柱状图配置
+        barChart.setOption({
+            ...baseChartConfig,
+            xAxis: {
+                axisLabel: {
+                    fontSize: isMobile ? 12 : 14,
+                    interval: 0
+                }
+            },
+            yAxis: {
+                axisLabel: {
+                    fontSize: isMobile ? 12 : 14
+                }
+            }
+        });
+
+        // 更新饼图配置
+        pieChart.setOption({
+            ...baseChartConfig,
+            series: [{
+                radius: isMobile ? ['35%', '55%'] : ['50%', '70%'],
+                center: ['50%', '50%'],
+                label: {
+                    fontSize: isMobile ? 12 : 14
+                }
+            }]
+        });
+
+        // 更新堆叠柱状图配置
+        stackBarChart.setOption({
+            ...baseChartConfig,
+            legend: {
+                orient: isMobile ? 'horizontal' : 'vertical',
+                right: isMobile ? 'center' : '5%',
+                top: isMobile ? 'bottom' : 'middle',
+                itemWidth: isMobile ? 20 : 25,
+                itemHeight: isMobile ? 14 : 14,
+                textStyle: {
+                    fontSize: isMobile ? 12 : 14,
+                    color: '#fff'
+                },
+                pageTextStyle: {
+                    color: '#fff'
+                }
+            }
+        });
+
+        // 更新堆叠面积图配置
+        stackAreaChart.setOption({
+            ...baseChartConfig,
+            legend: {
+                orient: isMobile ? 'horizontal' : 'vertical',
+                right: isMobile ? 'center' : '5%',
+                top: isMobile ? 'bottom' : 'middle',
+                itemWidth: isMobile ? 20 : 25,
+                itemHeight: isMobile ? 14 : 14,
+                textStyle: {
+                    fontSize: isMobile ? 12 : 14,
+                    color: '#fff'
+                }
+            }
+        });
+
+        // 更新雷达图配置
+        radarChart.setOption({
+            ...baseChartConfig,
+            radar: {
+                radius: isMobile ? '55%' : '75%',
+                center: isMobile ? ['50%', '50%'] : ['40%', '50%'],
+                name: {
+                    textStyle: {
+                        fontSize: isMobile ? 12 : 14,
+                        color: '#fff'
+                    }
+                }
+            },
+            legend: {
+                orient: isMobile ? 'horizontal' : 'vertical',
+                right: isMobile ? 'center' : '5%',
+                top: isMobile ? 'bottom' : 'middle',
+                itemWidth: isMobile ? 20 : 25,
+                itemHeight: isMobile ? 14 : 14,
+                textStyle: {
+                    fontSize: isMobile ? 12 : 14,
+                    color: '#fff'
+                }
+            }
+        });
+
+        // 更新旭日图配置
+        sunburstChart.setOption({
+            ...baseChartConfig,
+            series: [{
+                radius: isMobile ? ['20%', '70%'] : ['20%', '90%'],
+                label: {
+                    fontSize: isMobile ? 12 : 14
+                }
+            }]
+        });
+
+        // 调整所有图表大小
+        [barChart, pieChart, stackBarChart, stackAreaChart, radarChart, sunburstChart].forEach(chart => {
+            chart.resize();
+        });
+    }
+
+    // 添加防抖处理
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(resizeCharts, 250);
+    });
+
+    // 初始调用一次以设置初始状态
+    resizeCharts();
+
+    // 柱状图配置
+    const barOption = {
+        title: { text: '各类硬件平均价格', textStyle: { color: '#fff' } },
+        tooltip: {},
+        xAxis: { 
+            type: 'category', 
+            data: ['CPU', '显卡', '主板', '内存', '硬盘', '电源'],
+            axisLabel: {
+                interval: 0,
+                color: '#fff'
+            }
+        },
+        yAxis: { 
+            type: 'value',
+            name: '价格 (￥)',
+            nameTextStyle: { color: '#fff' },
+            axisLabel: { color: '#fff' }
+        },
+        series: [{
+            data: [
+                '{{ cpu_avg_price|floatformat:0 }}',
+                '{{ gpu_avg_price|floatformat:0 }}',
+                '{{ board_avg_price|floatformat:0 }}',
+                '{{ memory_avg_price|floatformat:0 }}',
+                '{{ disk_avg_price|floatformat:0 }}',
+                '{{ power_avg_price|floatformat:0 }}'
+            ],
+            type: 'bar',
+            itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    { offset: 0, color: '#83bff6' },
+                    { offset: 0.5, color: '#188df0' },
+                    { offset: 1, color: '#188df0' }
+                ])
+            },
+            emphasis: {
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: '#2378f7' },
+                        { offset: 0.7, color: '#2378f7' },
+                        { offset: 1, color: '#83bff6' }
+                    ])
+                }
+            },
+            showBackground: true,
+            backgroundStyle: {
+                color: 'rgba(180, 180, 180, 0.2)'
+            }
+        }]
+    };
+
+    // 饼图配置
+    const pieOption = {
+        title: { 
+            text: '硬件数据统计占比', 
+            textStyle: { color: '#fff' } 
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+            orient: 'vertical',
+            right: '5%',          // 调整到右侧
+            top: 'center',        // 垂直居中
+            data: ['CPU', '显卡', '主板', '内存', '硬盘', '电源'],
+            textStyle: { color: '#fff' }
+        },
+        series: [{
+            name: '硬件数量',
+            type: 'pie',
+            radius: ['50%', '70%'],  // 设置成环形图
+            center: ['40%', '50%'],  // 将饼图主体向左移动
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 2
+            },
+            label: {
+                show: true,
+                position: 'outside',
+                formatter: '{b}: {d}%'
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: '16',
+                    fontWeight: 'bold'
+                }
+            },
+            data: [
+                { value: '{{ cpu_count }}', name: 'CPU' },
+                { value: '{{ gpu_count }}', name: '显卡' },
+                { value: '{{ board_count }}', name: '主板' },
+                { value: '{{ memory_count }}', name: '内存' },
+                { value: '{{ disk_count }}', name: '硬盘' },
+                { value: '{{ power_count }}', name: '电源' }
+            ]
+        }]
+    };
+
+    // 堆叠柱状图配置
+    const stackBarOption = {
+        title: {
+            text: '各品牌硬件数量统计',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['Intel', 'AMD', 'NVIDIA', '威刚', '三星', '希捷', '华硕', '技嘉', '微星'],
+            textStyle: {
+                color: '#fff'
+            },
+            orient: 'vertical',  // 设置图例垂直排列
+            right: '5%',         // 设置图例靠右
+            top: 'middle',       // 垂直居中
+            itemWidth: 25,
+            itemHeight: 14
+        },
+        grid: {
+            left: '3%',
+            right: '15%',  // 增加右侧空间以适应图例
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: ['CPU', '显卡', '内存', '硬盘', '主板', '电源'],
+            axisLabel: {
+                color: '#fff'
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '数量',
+            nameLocation: 'start',      // 将名称放在轴的起始位置（底部）
+            nameGap: 25,               // 调整名称与轴的距离
+            nameTextStyle: {
+                color: '#fff',
+                align: 'left',         // 文字左对齐
+                verticalAlign: 'top'   // 垂直对齐方式设为顶部
+            },
+            axisLabel: {
+                color: '#fff'
+            }
+        },
+        series: [
+            {
+                name: 'Intel',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ intel_cpu }}', 0, 0, 0, 0, 0]
+            },
+            {
+                name: 'AMD',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ amd_cpu }}', '{{ amd_gpu }}', 0, 0, 0, 0]
+            },
+            {
+                name: 'NVIDIA',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0, '{{ nvidia_gpu }}', 0, 0, 0, 0]
+            },
+            {
+                name: '威刚',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0, 0, '{{ adata_memory }}', 0, 0, 0]
+            },
+            {
+                name: '三星',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0, 0, '{{ samsung_memory }}', '{{ samsung_disk }}', 0, 0]
+            },
+            {
+                name: '希捷',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0, 0, 0, '{{ seagate_disk }}', 0, 0]
+            },
+            {
+                name: '华硕',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0, '{{ asus_gpu }}', 0, 0, '{{ asus_board }}', 0]
+            },
+            {
+                name: '技嘉',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0, '{{ gigabyte_gpu }}', 0, 0, '{{ gigabyte_board }}', 0]
+            },
+            {
+                name: '微星',
+                type: 'bar',
+                stack: 'total',
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0, '{{ msi_gpu }}', 0, 0, '{{ msi_board }}', '{{ msi_power }}']
+            }
+        ]
+    };
+
+    // 堆叠面积图配置
+    const stackAreaOption = {
+        title: { 
+            text: '硬件数据趋势分析', 
+            textStyle: { color: '#fff' } 
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data: ['CPU', '显卡', '主板', '内存', '硬盘', '电源'],
+            textStyle: { color: '#fff' },
+            orient: 'vertical',  // 设置图例垂直排列
+            right: '5%',         // 设置图例靠右
+            top: 'middle',       // 垂直居中
+            itemWidth: 25,
+            itemHeight: 14
+        },
+        grid: {
+            left: '3%',
+            right: '15%',  // 增加右侧空间以适应图例
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: ['数量', '均价', '品牌数', '有效数据'],
+                axisLabel: { color: '#fff' }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: { color: '#fff' }
+            }
+        ],
+        series: [
+            {
+                name: 'CPU',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ cpu_count }}', '{{ cpu_avg_price }}', 2, '{{ cpu_count }}']
+            },
+            {
+                name: '显卡',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ gpu_count }}', '{{ gpu_avg_price }}', 5, '{{ gpu_count }}']
+            },
+            {
+                name: '主板',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ board_count }}', '{{ board_avg_price }}', 3, '{{ board_count }}']
+            },
+            {
+                name: '内存',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ memory_count }}', '{{ memory_avg_price }}', 2, '{{ memory_count }}']
+            },
+            {
+                name: '硬盘',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ disk_count }}', '{{ disk_avg_price }}', 2, '{{ disk_count }}']
+            },
+            {
+                name: '电源',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: ['{{ power_count }}', '{{ power_avg_price }}', 1, '{{ power_count }}']
+            }
+        ]
+    };
+
+    // 雷达图配置 - 展示硬件多维度对比
+    const radarOption2 = {
+        title: {
+            text: '硬件性能多维度对比',
+            textStyle: {
+                color: '#fff',
+                fontSize: window.innerWidth <= 480 ? 14 : 16
+            }
+        },
+        tooltip: {
+            confine: true,  // 确保提示框在图表区域内
+            textStyle: {
+                fontSize: window.innerWidth <= 480 ? 12 : 14
+            }
+        },
+        legend: {
+            data: ['高端配置', '主流配置', '入门配置'],
+            textStyle: {
+                color: '#fff',
+                fontSize: window.innerWidth <= 480 ? 12 : 14
+            },
+            orient: 'vertical',  // 设置图例垂直排列
+            right: '5%',         // 设置图例靠右
+            top: 'middle',       // 垂直居中
+            itemWidth: window.innerWidth <= 480 ? 15 : 25,
+            itemHeight: window.innerWidth <= 480 ? 10 : 14
+        },
+        radar: {
+            shape: 'circle',
+            splitNumber: 5,
+            radius: window.innerWidth <= 480 ? '65%' : '75%',  // 调整雷达图大小
+            center: ['40%', '50%'],  // 将雷达图主体向左移动一些
+            axisName: {
+                color: '#fff',
+                fontSize: window.innerWidth <= 480 ? 12 : 14
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.2)'
+                }
+            },
+            splitArea: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.2)'
+                }
+            },
+            indicator: [
+                { name: 'CPU性能', max: 100 },
+                { name: '显卡性能', max: 100 },
+                { name: '硬盘速度', max: 100 },
+                { name: '内存容量', max: 100 },
+                { name: '性价比', max: 100 },
+                { name: '散热性能', max: 100 }
+            ]
+        },
+        series: [{
+            name: '配置对比',
+            type: 'radar',
+            symbolSize: window.innerWidth <= 480 ? 3 : 5,  // 调整数据点大小
+            lineStyle: {
+                width: window.innerWidth <= 480 ? 1 : 2  // 调整线条宽度
+            },
+            data: [
+                {
+                    value: [95, 90, 95, 95, 70, 85],
+                    name: '高端配置',
+                    itemStyle: {
+                        color: '#ff6e76'
+                    },
+                    areaStyle: {
+                        color: 'rgba(255, 110, 118, 0.3)'
+                    }
+                },
+                {
+                    value: [75, 80, 75, 80, 85, 75],
+                    name: '主流配置',
+                    itemStyle: {
+                        color: '#fddd60'
+                    },
+                    areaStyle: {
+                        color: 'rgba(253, 221, 96, 0.3)'
+                    }
+                },
+                {
+                    value: [60, 65, 65, 60, 95, 65],
+                    name: '入门配置',
+                    itemStyle: {
+                        color: '#7cffb2'
+                    },
+                    areaStyle: {
+                        color: 'rgba(124, 255, 178, 0.3)'
+                    }
+                }
+            ]
+        }]
+    };
+
+    // 旭日图配置 - 展示硬件分类层级
+    const sunburstOption = {
+        title: {
+            text: '硬件分类层级图',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        tooltip: {
+            formatter: function (params) {
+                const value = params.value || '';
+                return `${params.name}: ${value}元`;
+            }
+        },
+        series: [{
+            type: 'sunburst',
+            radius: ['20%', '90%'],
+            data: [
+                {
+                    name: 'CPU',
+                    children: [
+                        {
+                            name: 'Intel',
+                            value: Number('{{ cpu_avg_price|default:0|floatformat:0 }}'),
+                            children: [
+                                {name: 'i9系列', value: 4599},
+                                {name: 'i7系列', value: 3299},
+                                {name: 'i5系列', value: 2299}
+                            ]
+                        },
+                        {
+                            name: 'AMD',
+                            value: Number('{{ cpu_avg_price|multiply:0.9|floatformat:0 }}'),
+                            children: [
+                                {name: 'R9系列', value: 3999},
+                                {name: 'R7系列', value: 2899},
+                                {name: 'R5系列', value: 1899}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: '显卡',
+                    children: [
+                        {
+                            name: 'NVIDIA',
+                            value: Number('{{ gpu_avg_price|default:0|floatformat:0 }}'),
+                            children: [
+                                {name: 'RTX40系列', value: 6999},
+                                {name: 'RTX30系列', value: 4999},
+                                {name: 'GTX系列', value: 2999}
+                            ]
+                        },
+                        {
+                            name: 'AMD',
+                            value: Number('{{ gpu_avg_price|multiply:0.8|floatformat:0 }}'),
+                            children: [
+                                {name: 'RX7000系列', value: 5999},
+                                {name: 'RX6000系列', value: 3999}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: '存储',
+                    children: [
+                        {
+                            name: '硬盘',
+                            value: Number('{{ disk_avg_price|default:0|floatformat:0 }}'),
+                            children: [
+                                {name: 'SSD', value: 799},
+                                {name: 'HDD', value: 399}
+                            ]
+                        },
+                        {
+                            name: '内存条',
+                            value: Number('{{ memory_avg_price|default:0|floatformat:0 }}'),
+                            children: [
+                                {name: 'DDR5', value: 599},
+                                {name: 'DDR4', value: 399}
+                            ]
+                        }
+                    ]
+                }
+            ],
+            label: {
+                color: '#fff',
+                formatter: '{b}'
+            },
+            levels: [
+                {},
+                {
+                    r0: '20%',
+                    r: '45%',
+                    itemStyle: {
+                        borderWidth: 2
+                    },
+                    label: {
+                        rotate: 'tangential'
+                    }
+                },
+                {
+                    r0: '45%',
+                    r: '70%',
+                    label: {
+                        align: 'right'
+                    }
+                },
+                {
+                    r0: '70%',
+                    r: '90%',
+                    label: {
+                        position: 'outside',
+                        padding: 3,
+                        silent: false
+                    },
+                    itemStyle: {
+                        borderWidth: 3
+                    }
+                }
+            ],
+            itemStyle: {
+                borderWidth: 1,
+                borderColor: 'rgba(255, 255, 255, 0.3)'
+            }
+        }]
+    };
+
+    // 设置图表配置
+    barChart.setOption(barOption);
+    pieChart.setOption(pieOption);
+    stackBarChart.setOption(stackBarOption);
+    stackAreaChart.setOption(stackAreaOption);
+    radarChart.setOption(radarOption2);
+    sunburstChart.setOption(sunburstOption);
+</script>
+{% endblock %}
