@@ -33,6 +33,7 @@
         <div class="contact-form-section">
             <div class="form-container">
                 <h2>发送消息</h2>
+                {% csrf_token %}
                 <form class="contact-form">
                     <div class="form-group">
                         <label for="name">姓名</label>

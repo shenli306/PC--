@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block content %}
+<!-- 添加 CSRF token -->
+{% csrf_token %}
+
 <link rel="stylesheet" href="/static/css/index.css">
 <style>
     /* 保持原有的数据可视化相关样式 */

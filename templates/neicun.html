@@ -2,6 +2,7 @@
 
 {% block hardware_content %}
 {{ block.super }}
+{% csrf_token %}
 <div class="header-section">
     <div class="title-wrapper">
         <h1 class="hardware-title">

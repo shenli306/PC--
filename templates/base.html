@@ -22,16 +22,74 @@
             <li><a href="/index/">首页</a></li>
             <li><a href="/see/">数据大屏</a></li>
             <li><a href="/about/">关于</a></li>
-            <li><a href="/contact/">联系</a></li>
         </ul>
-        <form id="content" onsubmit="return checkSearch(event)">
+        <form id="content" method="post" action="/search/">
+            {% csrf_token %}
             <input type="text" name="input" class="input" id="search-input">
-            <button type="reset" class="search" id="search-btn"></button>
+            <button type="submit" class="search" id="search-btn"></button>
         </form>
     </nav>
 
     {% block content %}
     {% endblock %}
+    
+    <script>
+    // Get CSRF token from cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Add CSRF token to all AJAX requests
+    document.addEventListener('DOMContentLoaded', function() {
+        const csrftoken = getCookie('csrftoken');
+        
+        // Add CSRF token to form if using AJAX
+        const form = document.getElementById('content');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchInput = document.getElementById('search-input').value;
+            
+            // 检查是否输入了"zyd"
+            if (searchInput.trim().toLowerCase() === 'zyd') {
+                window.location.href = '/zero/';
+                return;
+            }
+            
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: 'input=' + encodeURIComponent(searchInput)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                // Handle the response
+                window.location.href = '/search/?q=' + encodeURIComponent(searchInput);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+    </script>
     <script src="/static/js/script.js"></script>
 </body>
 

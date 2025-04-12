@@ -15,7 +15,7 @@
             <div class="left image-side"></div>
             <div class="right form-side">
                 <h4>登 录</h4>
-                <form method="post">
+                <form method="post" id="loginForm">
                     {% csrf_token %}
                     {% if error %}
                         <div class="error-message">{{ error }}</div>
@@ -40,7 +40,7 @@
             }, 100);
 
             // 表单验证
-            const form = document.querySelector('form');
+            const form = document.getElementById('loginForm');
             const username = form.querySelector('input[name="username"]');
             const password = form.querySelector('input[name="password"]');
 
@@ -48,6 +48,12 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
+                // 检查CSRF token是否存在
+                if (!this.querySelector('[name="csrfmiddlewaretoken"]')) {
+                    alert('页面已过期，请刷新后重试');
+                    return;
+                }
+
                 // 检查用户名是否为空
                 if (!username.value.trim()) {
                     alert('用户名不能为空！');
